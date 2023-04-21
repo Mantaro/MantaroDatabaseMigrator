@@ -15,22 +15,21 @@
  *
  */
 
-package net.kodehawa.mantarobot.commands.currency.item;
+package net.kodehawa.migrator.helpers;
 
-import net.kodehawa.mantarobot.commands.currency.item.special.Broken;
-import net.kodehawa.mantarobot.commands.currency.item.special.Fish;
-import net.kodehawa.mantarobot.commands.currency.item.special.Food;
-import net.kodehawa.mantarobot.commands.currency.item.special.Potion;
-import net.kodehawa.mantarobot.commands.currency.item.special.Water;
-import net.kodehawa.mantarobot.commands.currency.item.special.gems.CastedGem;
-import net.kodehawa.mantarobot.commands.currency.item.special.gems.Gem;
-import net.kodehawa.mantarobot.commands.currency.item.special.gems.Sparkle;
-import net.kodehawa.mantarobot.commands.currency.item.special.helpers.attributes.GemType;
-import net.kodehawa.mantarobot.commands.currency.item.special.tools.Axe;
-import net.kodehawa.mantarobot.commands.currency.item.special.tools.FishRod;
-import net.kodehawa.mantarobot.commands.currency.item.special.tools.Pickaxe;
-import net.kodehawa.mantarobot.commands.currency.item.special.tools.Wrench;
-import net.kodehawa.mantarobot.utils.commands.EmoteReference;
+import net.kodehawa.migrator.helpers.special.Broken;
+import net.kodehawa.migrator.helpers.special.Fish;
+import net.kodehawa.migrator.helpers.special.Food;
+import net.kodehawa.migrator.helpers.special.Potion;
+import net.kodehawa.migrator.helpers.special.Water;
+import net.kodehawa.migrator.helpers.special.gems.CastedGem;
+import net.kodehawa.migrator.helpers.special.gems.Gem;
+import net.kodehawa.migrator.helpers.special.gems.Sparkle;
+import net.kodehawa.migrator.helpers.special.helpers.attributes.GemType;
+import net.kodehawa.migrator.helpers.special.tools.Axe;
+import net.kodehawa.migrator.helpers.special.tools.FishRod;
+import net.kodehawa.migrator.helpers.special.tools.Pickaxe;
+import net.kodehawa.migrator.helpers.special.tools.Wrench;
 
 public class ItemReference {
     public static final Item HEADPHONES, BAN_HAMMER, KICK_BOOT, FLOPPY_DISK, MY_MATHS, PING_RACKET,
@@ -48,7 +47,7 @@ public class ItemReference {
             BROKEN_MOON_ROD, BROKEN_COMET_AXE, BROKEN_STAR_AXE, BROKEN_SPARKLE_AXE, BROKEN_MOON_AXE, BROKEN_HELLFIRE_PICK,
             BROKEN_HELLFIRE_AXE, BROKEN_HELLFIRE_ROD, CHOP_CRATE, CHOP_PREMIUM_CRATE;
 
-    public static final Item[] ALL = {
+    public static final Item[] ALL = new Item[]{
             HEADPHONES = new Item(ItemType.COLLECTABLE, "\uD83C\uDFA7",
                     "Headphones", "items.headphones", "items.description.headphones",
                     5, true, false, false
@@ -105,78 +104,78 @@ public class ItemReference {
                     100, true, 40, 0, 1, "items.explanation.pick"
             ),
 
-            MILK = new Item(ItemType.COMMON, EmoteReference.POTION1.getUnicode(),
+            MILK = new Item(ItemType.COMMON, "",
                     "Glass of Milk", "items.milk", "items.description.milk",
                     25, true
             ),
 
-            ALCOHOL = new Item(ItemType.COMMON, EmoteReference.POTION2.getUnicode(),
+            ALCOHOL = new Item(ItemType.COMMON, "",
                     "Old Beverage", "items.beverage", "items.description.beverage",
                     25, true
             ),
 
-            LEWD_MAGAZINE = new Item(ItemType.COLLECTABLE, EmoteReference.MAGAZINE.getUnicode(),
+            LEWD_MAGAZINE = new Item(ItemType.COLLECTABLE, "",
                     "Lewd Magazine",
                     "items.lewd", "items.description.lewd",
                     25, true
             ),
 
-            RING = new Item(ItemType.COMMON, EmoteReference.RING.getUnicode(),
+            RING = new Item(ItemType.COMMON, "",
                     "Marriage Ring", "items.ring", "items.description.ring",
                     60, true
             ),
 
-            LOVE_LETTER = new Item(ItemType.COLLECTABLE, EmoteReference.LOVE_LETTER.getUnicode(),
+            LOVE_LETTER = new Item(ItemType.COLLECTABLE, "",
                     "Love Letter", "items.letter", "items.description.letter",
                     45, false, false
             ),
 
-            LOOT_CRATE_KEY = new Item(ItemType.COMMON, EmoteReference.KEY.getUnicode(),
+            LOOT_CRATE_KEY = new Item(ItemType.COMMON, "",
                     "Crate Key", "items.key", "items.description.key",
                     58, true
             ),
 
-            CLOTHES = new Item(ItemType.COMMON, EmoteReference.CLOTHES.getUnicode(),
+            CLOTHES = new Item(ItemType.COMMON, "",
                     "Clothes", "items.clothes", "items.description.clothes",
                     30, true
             ),
 
-            DIAMOND = new Item(ItemType.COMMON, EmoteReference.DIAMOND.getUnicode(),
+            DIAMOND = new Item(ItemType.COMMON, "",
                     "Diamond", "items.diamond", "items.description.diamond",
                     200, true
             ),
 
-            DRESS = new Item(ItemType.COMMON, EmoteReference.DRESS.getUnicode(), "Wedding Dress",
+            DRESS = new Item(ItemType.COMMON, "", "Wedding Dress",
                     "items.dress", "items.description.dress",
                     75, true
             ),
 
-            NECKLACE = new Item(ItemType.COMMON, EmoteReference.NECKLACE.getUnicode(),
+            NECKLACE = new Item(ItemType.COMMON, "",
                     "Necklace", "items.necklace", "items.description.necklace",
                     17, true
             ),
 
-            TUXEDO = new Item(ItemType.COMMON, EmoteReference.TUXEDO.getUnicode(),
+            TUXEDO = new Item(ItemType.COMMON, "",
                     "Tuxedo", "items.tuxedo", "items.description.tuxedo",
                     50, true
             ),
 
-            SHOES = new Item(ItemType.COMMON, EmoteReference.SHOES.getUnicode(),
+            SHOES = new Item(ItemType.COMMON, "",
                     "Shoes", "items.shoes", "items.description.shoes",
                     10, true
             ),
 
-            ROSE = new Item(ItemType.COMMON, EmoteReference.ROSE.getUnicode(),
+            ROSE = new Item(ItemType.COMMON, "",
                     "Rose", "items.rose", "items.description.rose",
                     25, true
             ),
 
-            CHOCOLATE = new Item(ItemType.COMMON, EmoteReference.CHOCOLATE.getUnicode(),
+            CHOCOLATE = new Item(ItemType.COMMON, "",
                     "Chocolate", "items.chocolate", "items.description.chocolate",
                     23, true
             ),
 
-            COOKIES = new Item(ItemType.COMMON, EmoteReference.COOKIE.getUnicode(),
+            COOKIES = new Item(ItemType.COMMON, "",
                     "Cookie", "items.cookie", "items.description.cookie",
                     10, true
             ),
@@ -186,15 +185,15 @@ public class ItemReference {
                     "Special Loaded Die", "items.description.die_2"
             ),
 
-            BOOSTER = new Item(EmoteReference.RUNNER.getUnicode(),
+            BOOSTER = new Item("",
                     "Booster", "items.description.booster"
             ),
 
-            BERSERK = new Item(EmoteReference.CROSSED_SWORD.getUnicode(),
+            BERSERK = new Item("",
                     "Berserk", "items.description.berserk"
             ),
 
-            COMPANION = new Item(EmoteReference.DOG.getUnicode(),
+            COMPANION = new Item("",
                     "Companion", "items.description.companion"
             ),
 
@@ -202,7 +201,7 @@ public class ItemReference {
                     "Special Ring", "items.description.special_ring"
             ),
 
-            ENHANCER = new Item(EmoteReference.MAG.getUnicode(),
+            ENHANCER = new Item("",
                     "Enchancer", "items.description.enchancer"
             ),
 
@@ -212,13 +211,15 @@ public class ItemReference {
             ),
             // Left overs from v1 end
 
-            LOOT_CRATE = new Item(ItemType.CRATE, EmoteReference.LOOT_CRATE.getDiscordNotation(),
+            LOOT_CRATE = new Item(ItemType.CRATE, "",
                     "Loot Crate", "items.crate", "items.description.crate",
                     0, false, false, true,
-                    (ctx, season) -> ItemHelper.openLootCrate(ctx, ItemType.LootboxType.RARE, 33, EmoteReference.LOOT_CRATE, 3)
+                    (ctx, season) -> {
+                            return false;
+                    }
             ),
 
-            STAR_2 = new Item(ItemType.COLLECTABLE, EmoteReference.STAR.getUnicode(), "Consolation Prize",
+            STAR_2 = new Item(ItemType.COLLECTABLE, "", "Consolation Prize",
                     "items.prize_2", "items.description.prize_2",
                     500, true, false, true
             ),
@@ -228,7 +229,7 @@ public class ItemReference {
                     65, true, true
             ),
 
-            HOUSE = new Item(ItemType.COMMON, EmoteReference.HOUSE.getUnicode(),
+            HOUSE = new Item(ItemType.COMMON, "",
                     "House", "items.house", "items.description.house",
                     750, true, true
             ),
@@ -316,7 +317,7 @@ public class ItemReference {
                     "items.description.fragment", 50, 3
             ),
 
-            MOP = new Item(ItemType.INTERACTIVE, EmoteReference.MOP.getUnicode(),
+            MOP = new Item(ItemType.INTERACTIVE, "",
                     "Mop", "items.mop", "items.description.mop",
                     10, true
             ),
@@ -342,7 +343,7 @@ public class ItemReference {
             ),
 
             DIAMOND_PICKAXE = new Pickaxe(ItemType.MINE_PICK,
-                    1, 20, EmoteReference.DIAMOND_PICK.getDiscordNotation(),
+                    1, 20, "",
                     "Diamond Pickaxe", "items.diamond_pick", "items.description.diamond_pick",
                     100, true, false,
                     "1;3;7", 150, 40, 2,
@@ -367,14 +368,14 @@ public class ItemReference {
             ),
 
             COMET_PICKAXE = new Pickaxe(ItemType.MINE_PICK,
-                    1, 10, EmoteReference.COMET_PICK.getDiscordNotation(),
+                    1, 10, "",
                     "Comet Pickaxe", "items.comet_pick", "items.description.comet_pick",
                     290, true, false,
                     "1;2;7", 180, 100, 310, 3,
                     "items.explanation.comet_pick", 10, 48, 101
             ),
 
-            STAR_PICKAXE = new Pickaxe(ItemType.MINE_PICK, EmoteReference.STAR_PICK.getDiscordNotation(),
+            STAR_PICKAXE = new Pickaxe(ItemType.MINE_PICK, "",
                     "Star Pickaxe", "items.star_pick", "items.description.star_pick",
                     1, 10, 350, true, false, "1;2;7",
                     220, 100, 3, 390, 300, 4,
@@ -396,46 +397,38 @@ public class ItemReference {
                     550, true, false
             ),
 
-            MINE_CRATE = new Item(ItemType.CRATE, EmoteReference.MINE_CRATE.getDiscordNotation(),
+            MINE_CRATE = new Item(ItemType.CRATE, "",
                     "Gem Crate", "items.mine_crate", "items.description.mine_crate",
-                    0, false, false, true,
-                    (ctx, season) ->
-                            ItemHelper.openLootCrate(ctx, ItemType.LootboxType.MINE, 66, EmoteReference.MINE_CRATE, 3)
+                    0, false, false, true
             ),
 
-            FISH_CRATE = new Item(ItemType.CRATE, EmoteReference.FISH_CRATE.getDiscordNotation(),
+            FISH_CRATE = new Item(ItemType.CRATE, "",
                     "Fish Treasure", "items.fish_crate", "items.description.fish_crate",
                     0,
-                    false, false, true,
-                    (ctx, season) ->
-                            ItemHelper.openLootCrate(ctx, ItemType.LootboxType.FISH, 67, EmoteReference.FISH_CRATE, 3)
+                    false, false, true
             ),
 
-            FISH_PREMIUM_CRATE = new Item(ItemType.CRATE, EmoteReference.PREMIUM_FISH_CRATE.getDiscordNotation(),
+            FISH_PREMIUM_CRATE = new Item(ItemType.CRATE, "",
                     "Fish Premium Treasure", "items.fish_premium_crate", "items.description.fish_premium_crate",
                     0,
-                    false, false, true,
-                    (ctx, season) ->
-                            ItemHelper.openLootCrate(ctx, ItemType.LootboxType.FISH_PREMIUM, 68, EmoteReference.PREMIUM_FISH_CRATE, 5)
+                    false, false, true
             ),
 
-            MINE_PREMIUM_CRATE = new Item(ItemType.CRATE, EmoteReference.PREMIUM_MINE_CRATE.getDiscordNotation(),
+            MINE_PREMIUM_CRATE = new Item(ItemType.CRATE, "",
                     "Gem Premium Crate", "items.mine_premium_crate", "items.description.mine_premium_crate",
                     0,
-                    false, false, true,
-                    (ctx, season) ->
-                            ItemHelper.openLootCrate(ctx, ItemType.LootboxType.MINE_PREMIUM, 69, EmoteReference.PREMIUM_MINE_CRATE, 5)
+                    false, false, true
             ),
 
             COMET_ROD = new FishRod(ItemType.FISHROD, 6,
-                    1, 15, EmoteReference.COMET_ROD.getDiscordNotation(),
+                    1, 15, "",
                     "Comet Gem Rod", "Comet Rod", "items.comet_rod", "items.description.comet_rod",
                     "items.explanation.comet_rod", 3, 150,
                     "1;2;3", 130, 44, 48, 101
             ),
 
             STAR_ROD = new FishRod(ItemType.FISHROD, 9,
-                    1, 10, EmoteReference.STAR_ROD.getDiscordNotation(),
+                    1, 10, "",
                     "Star Gem Rod", "Star Rod", "items.star_rod", "items.description.star_rod",
                     "items.explanation.star_rod", 4, 250,
                     "1;2;3", 170, 44, 49, 101
@@ -448,7 +441,7 @@ public class ItemReference {
                     "", 2
             ),
 
-            SPARKLE_PICKAXE = new Pickaxe(ItemType.MINE_RARE_PICK, EmoteReference.SPARKLE_PICK.getDiscordNotation(),
+            SPARKLE_PICKAXE = new Pickaxe(ItemType.MINE_RARE_PICK, "",
                     "Sparkle Pickaxe", "items.sparkle_pick", "items.description.sparkle_pick",
                     3, 5, 1200,
                     true, false, "1;3;1;7", 450, 300, 4,
@@ -462,7 +455,7 @@ public class ItemReference {
             ),
 
             SPARKLE_ROD = new FishRod(ItemType.FISHROD_RARE, 14,
-                    3, 4, EmoteReference.SPARKLE_ROD.getDiscordNotation(),
+                    3, 4, "",
                     "Sparkle Rod", "items.sparkle_rod", "items.description.sparkle_rod",
                     "items.explanation.sparkle_rod", 6, 800,
                     "1;2;1;3", 300, 44, 74, 18, 101
@@ -473,24 +466,24 @@ public class ItemReference {
                     800, false
             ),
 
-            SHARK = new Fish(ItemType.FISHING_RARE, 10, EmoteReference.SHARK.getUnicode(),
+            SHARK = new Fish(ItemType.FISHING_RARE, 10, "",
                     "Shark", "items.shark", "items.description.shark",
                     1000, false
             ),
 
             WRENCH_COMET = new Wrench(ItemType.WRENCH, 90,
-                    3, 0.90d, EmoteReference.COMET_WRENCH.getDiscordNotation(),
+                    3, 0.90d, "",
                     "Comet Wrench", "items.comet_wrench", "items.description.comet_wrench",
                     "items.explanation.comet_wrench",
-                    200, 80, 3,true, false,
+                    200, 80, 3, true, false,
                     "1;2;2", 59, 48, 83
             ),
 
             WRENCH_SPARKLE = new Wrench(ItemType.WRENCH, 96,
-                    4, 0.65d, EmoteReference.SPARKLE_WRENCH.getDiscordNotation(),
+                    4, 0.65d, "",
                     "Sparkle Wrench", "items.sparkle_wrench", "items.description.sparkle_wrench",
                     "items.explanation.sparkle_wrench",
-                    500, 160, 5,true, false,
+                    500, 160, 5, true, false,
                     "1;2;1;2;1", 59, 74, 18, 83, 84
             ),
 
@@ -519,32 +512,32 @@ public class ItemReference {
                     "items.description.flake", 25, 2
             ),
 
-            BROKEN_SPARKLE_PICK = new Broken(73, EmoteReference.BROKEN_SPARKLE_PICK.getDiscordNotation(),
+            BROKEN_SPARKLE_PICK = new Broken(73, "",
                     "Broken Sparkle Pickaxe", "items.broken_sparkle_pick", "items.description.broken_sparkle_pick",
                     100, "1,74;4,84;2,50"
             ),
 
-            BROKEN_COMET_PICK = new Broken(61, EmoteReference.BROKEN_COMET_PICK.getDiscordNotation(),
+            BROKEN_COMET_PICK = new Broken(61, "",
                     "Broken Comet Pickaxe", "items.broken_comet_pick", "items.description.broken_comet_pick",
                     40, "1,48;3,84;2,50"
             ),
 
-            BROKEN_STAR_PICK = new Broken(62, EmoteReference.BROKEN_STAR_PICK.getDiscordNotation(),
+            BROKEN_STAR_PICK = new Broken(62, "",
                     "Broken Star Pickaxe", "items.broken_star_pick", "items.description.broken_star_pick",
                     40, "1,49;3,84;3,50"
             ),
 
-            BROKEN_SPARKLE_ROD = new Broken(75, EmoteReference.BROKEN_SPARKLE_ROD.getDiscordNotation(),
+            BROKEN_SPARKLE_ROD = new Broken(75, "",
                     "Broken Sparkle Rod", "items.broken_sparkle_rod", "items.description.broken_sparkle_rod",
                     90, "1,74;4,84;2,50"
             ),
 
-            BROKEN_COMET_ROD = new Broken(70, EmoteReference.BROKEN_COMET_ROD.getDiscordNotation(),
+            BROKEN_COMET_ROD = new Broken(70, "",
                     "Broken Comet Rod", "items.broken_comet_rod", "items.description.broken_comet_rod",
                     30, "1,48;3,84;2,50"
             ),
 
-            BROKEN_STAR_ROD = new Broken(71, EmoteReference.BROKEN_STAR_ROD.getDiscordNotation(),
+            BROKEN_STAR_ROD = new Broken(71, "",
                     "Broken Star Rod", "items.broken_star_rod", "items.description.broken_star_rod",
                     30, "1,49;3,84;3,50"
             ),
@@ -565,7 +558,7 @@ public class ItemReference {
                     0, false, false
             ),
 
-            PET_HOUSE = new Item(ItemType.PET, EmoteReference.PET_HOUSE.getDiscordNotation(),
+            PET_HOUSE = new Item(ItemType.PET, "",
                     "Pet House", "items.pet_house", "items.description.pet_house",
                     170, true, true
             ),
@@ -605,7 +598,7 @@ public class ItemReference {
                     25, false
             ),
 
-            MOON_PICK = new Pickaxe(ItemType.MINE_RARE_PICK, EmoteReference.MOON_PICK.getDiscordNotation(),
+            MOON_PICK = new Pickaxe(ItemType.MINE_RARE_PICK, "",
                     "Moon Pickaxe", "items.moon_pick", "items.description.moon_pick",
                     2, 7, 1000, true, false,
                     "1;1;3;2;5;10", 320, 140, 4,
@@ -613,7 +606,7 @@ public class ItemReference {
                     "items.explanation.moon_pick", 10, 83, 18, 76, 101
             ),
 
-            HELLFIRE_PICK = new Pickaxe(ItemType.MINE_RARE_PICK_NODROP, EmoteReference.HELLFIRE_PICK.getDiscordNotation(),
+            HELLFIRE_PICK = new Pickaxe(ItemType.MINE_RARE_PICK_NODROP, "",
                     "Hellfire Pickaxe", "items.hellfire_pick", "items.description.hellfire_pick",
                     4, 1, 15000, true, false,
                     "450;1;175;1;175;1;55;1;50;50", 3000, 1500,
@@ -627,7 +620,7 @@ public class ItemReference {
             ),
 
             COMET_AXE = new Axe(ItemType.CHOP_AXE, 0.13f,
-                    1, 10, EmoteReference.COMET_AXE.getDiscordNotation(),
+                    1, 10, "",
                     "Comet Axe", "items.comet_axe", "items.description.comet_axe",
                     "items.explanation.comet_axe",
                     3, 290, true, false,
@@ -635,7 +628,7 @@ public class ItemReference {
             ),
 
             STAR_AXE = new Axe(ItemType.CHOP_AXE, 0.09f,
-                    1, 10, EmoteReference.STAR_AXE.getDiscordNotation(),
+                    1, 10, "",
                     "Star Axe", "items.star_axe", "items.description.star_axe",
                     "items.explanation.star_axe",
                     4, 350, true, false,
@@ -643,7 +636,7 @@ public class ItemReference {
             ),
 
             SPARKLE_AXE = new Axe(ItemType.CHOP_RARE_AXE, 0.04f,
-                    3, 5, EmoteReference.SPARKLE_AXE.getDiscordNotation(),
+                    3, 5, "",
                     "Sparkle Axe", "items.sparkle_axe", "items.description.sparkle_axe",
                     "items.explanation.sparkle_axe",
                     6, 1200, true, false,
@@ -651,7 +644,7 @@ public class ItemReference {
             ),
 
             MOON_AXE = new Axe(ItemType.CHOP_RARE_AXE, 0.1f,
-                    2, 7, EmoteReference.MOON_AXE.getDiscordNotation(),
+                    2, 7, "",
                     "Moon Axe", "items.moon_axe", "items.description.moon_axe",
                     "items.explanation.moon_axe",
                     5, 1000, true, false,
@@ -659,22 +652,20 @@ public class ItemReference {
             ),
 
             HELLFIRE_AXE = new Axe(ItemType.CHOP_RARE_AXE_NODROP, 0.00001f,
-                    3, 1, EmoteReference.HELLFIRE_AXE.getDiscordNotation(),
+                    3, 1, "",
                     "Hellfire Axe", "items.hellfire_axe", "items.description.hellfire_axe",
                     "items.explanation.hellfire_axe",
-                    7,15000, true, false,
+                    7, 15000, true, false,
                     "450;175;1;175;1;55;1;50;50", 3100, 900, 18, 48, 105, 49, 106, 74, 107, 101, 76
             ),
 
-            MOON_ROD = new FishRod(ItemType.FISHROD_RARE, 12, 2,
-                    4, EmoteReference.MOON_ROD.getDiscordNotation(),
+            MOON_ROD = new FishRod(ItemType.FISHROD_RARE, 12, 2, 4, "",
                     "Moon Rod", "items.moon_rod", "items.description.moon_rod",
                     "items.explanation.moon_rod", 5, 800,
                     "1;2;3;3", 200, 44, 83, 76, 101
             ),
 
-            HELLFIRE_ROD = new FishRod(ItemType.FISHROD_RARE_NODROP, 24,
-                    3, 4, EmoteReference.HELLFIRE_ROD.getDiscordNotation(),
+            HELLFIRE_ROD = new FishRod(ItemType.FISHROD_RARE_NODROP, 24, 3, 4, "",
                     "Hellfire Rod", "items.hellfire_rod", "items.description.hellfire_rod",
                     "items.explanation.hellfire_rod", 7, 15000,
                     "450;175;1;175;1;50;1;35;50", 2500, 18, 48, 70, 49, 71, 74, 75, 101, 76
@@ -704,63 +695,59 @@ public class ItemReference {
                     "items.description.rock", 10, 1
             ),
 
-            BROKEN_MOON_PICK = new Broken(102, EmoteReference.BROKEN_MOON_PICK.getDiscordNotation(),
+            BROKEN_MOON_PICK = new Broken(102, "",
                     "Broken Moon Pickaxe", "items.broken_moon_pick", "items.description.broken_moon_pick",
                     40, "1,83;3,84;2,50"
             ),
 
-            BROKEN_MOON_ROD = new Broken(110, EmoteReference.BROKEN_MOON_ROD.getDiscordNotation(),
+            BROKEN_MOON_ROD = new Broken(110, "",
                     "Broken Moon Rod", "items.broken_moon_rod", "items.description.broken_moon_rod",
                     40, "1,83;3,84;3,50"
             ),
 
-            BROKEN_COMET_AXE = new Broken(105, EmoteReference.BROKEN_COMET_AXE.getDiscordNotation(),
+            BROKEN_COMET_AXE = new Broken(105, "",
                     "Broken Comet Axe", "items.broken_comet_axe", "items.description.broken_comet_axe",
                     30, "1,48;3,84;2,50"
             ),
 
-            BROKEN_STAR_AXE = new Broken(106, EmoteReference.BROKEN_STAR_AXE.getDiscordNotation(),
+            BROKEN_STAR_AXE = new Broken(106, "",
                     "Broken Star Axe", "items.broken_star_axe", "items.description.broken_star_axe",
                     30, "1,49;3,84;2,50"
             ),
 
-            BROKEN_SPARKLE_AXE = new Broken(107, EmoteReference.BROKEN_SPARKLE_AXE.getDiscordNotation(),
+            BROKEN_SPARKLE_AXE = new Broken(107, "",
                     "Broken Sparkle Axe", "items.broken_sparkle_axe", "items.description.broken_sparkle_axe",
                     100, "1,74;5,84;3,50"
             ),
 
-            BROKEN_MOON_AXE = new Broken(108, EmoteReference.BROKEN_MOON_AXE.getDiscordNotation(),
+            BROKEN_MOON_AXE = new Broken(108, "",
                     "Broken Moon Axe", "items.broken_moon_axe", "items.description.broken_moon_axe",
                     30, "1,83;5,84;3,50"
             ),
 
-            BROKEN_HELLFIRE_PICK = new Broken(103, EmoteReference.BROKEN_HELLFIRE_PICK.getDiscordNotation(),
+            BROKEN_HELLFIRE_PICK = new Broken(103, "",
                     "Broken Hellfire Pick", "items.broken_hellfire_pick", "items.description.broken_hellfire_pick",
                     5000, "90,18;50,48;50,49;20,74;25,76;10,84;30,50"
             ),
 
-            BROKEN_HELLFIRE_AXE = new Broken(109, EmoteReference.BROKEN_HELLFIRE_AXE.getDiscordNotation(),
+            BROKEN_HELLFIRE_AXE = new Broken(109, "",
                     "Broken Hellfire Axe", "items.broken_hellfire_axe", "items.description.broken_hellfire_axe",
                     5000, "90,18;50,48;50,49;20,74;25,76;10,84;30,50"
             ),
 
-            BROKEN_HELLFIRE_ROD = new Broken(111, EmoteReference.BROKEN_HELLFIRE_ROD.getDiscordNotation(),
+            BROKEN_HELLFIRE_ROD = new Broken(111, "",
                     "Broken Hellfire Rod", "items.broken_hellfire_rod", "items.description.broken_hellfire_rod",
                     5000, "90,18;50,48;50,49;20,74;25,76;10,84;30,50"
             ),
 
-            CHOP_CRATE = new Item(ItemType.CRATE, EmoteReference.CHOP_CRATE.getDiscordNotation(),
+            CHOP_CRATE = new Item(ItemType.CRATE, "",
                     "Chop Crate", "items.chop_crate", "items.description.chop_crate",
-                    0, false, false, true,
-                    (ctx, season) ->
-                            ItemHelper.openLootCrate(ctx, ItemType.LootboxType.CHOP, 126, EmoteReference.CHOP_CRATE, 3)
+                    0, false, false, true
             ),
 
-            CHOP_PREMIUM_CRATE = new Item(ItemType.CRATE, EmoteReference.PREMIUM_CHOP_CRATE.getDiscordNotation(),
+            CHOP_PREMIUM_CRATE = new Item(ItemType.CRATE, "",
                     "Chop Premium Crate", "items.chop_premium_crate", "items.description.chop_premium_crate",
-                    0, false, false, true,
-                    (ctx, season) ->
-                            ItemHelper.openLootCrate(ctx, ItemType.LootboxType.CHOP_PREMIUM, 127, EmoteReference.PREMIUM_CHOP_CRATE, 5)
+                    0, false, false, true
             )
     };
 }

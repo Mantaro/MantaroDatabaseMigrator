@@ -15,7 +15,7 @@
  *
  */
 
-package net.kodehawa.mantarobot.commands.currency.item.special.helpers.attributes;
+package net.kodehawa.migrator.helpers.special.helpers.attributes;
 
 public enum GemType {
     UTILITY, GEM

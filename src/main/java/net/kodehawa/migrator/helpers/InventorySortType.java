@@ -15,9 +15,7 @@
  *
  */
 
-package net.kodehawa.mantarobot.commands.currency.profile.inventory;
-
-import net.kodehawa.mantarobot.commands.currency.item.ItemStack;
+package net.kodehawa.migrator.helpers;
 
 public enum InventorySortType {
     VALUE(InventorySort.SORT_VALUE, "commands.inventory.sort.value"), AMOUNT(InventorySort.SORT_AMOUNT, "commands.inventory.sort.amount"),

@@ -15,10 +15,10 @@
  *
  */
 
-package net.kodehawa.mantarobot.commands.currency.item.special;
+package net.kodehawa.migrator.helpers.special;
 
-import net.kodehawa.mantarobot.commands.currency.item.Item;
-import net.kodehawa.mantarobot.commands.currency.item.ItemType;
+import net.kodehawa.migrator.helpers.Item;
+import net.kodehawa.migrator.helpers.ItemType;
 
 public class Water extends Item {
     public Water(ItemType type, String emoji, String name, String translatedName,

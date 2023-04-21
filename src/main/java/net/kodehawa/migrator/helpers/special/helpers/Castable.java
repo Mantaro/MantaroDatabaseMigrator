@@ -15,7 +15,7 @@
  *
  */
 
-package net.kodehawa.mantarobot.commands.currency.item.special.helpers;
+package net.kodehawa.migrator.helpers.special.helpers;
 
 public interface Castable {
     int getCastLevelRequired();

@@ -15,11 +15,11 @@
  *
  */
 
-package net.kodehawa.mantarobot.commands.currency.item.special.gems;
+package net.kodehawa.migrator.helpers.special.gems;
 
-import net.kodehawa.mantarobot.commands.currency.item.Item;
-import net.kodehawa.mantarobot.commands.currency.item.ItemType;
-import net.kodehawa.mantarobot.commands.currency.item.special.helpers.attributes.Tiered;
+import net.kodehawa.migrator.helpers.Item;
+import net.kodehawa.migrator.helpers.ItemType;
+import net.kodehawa.migrator.helpers.special.helpers.attributes.Tiered;
 
 public class CastedGem extends Item implements Tiered {
     private final int tier;

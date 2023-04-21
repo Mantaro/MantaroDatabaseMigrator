@@ -15,9 +15,7 @@
  *
  */
 
-package net.kodehawa.mantarobot.commands.currency.profile.inventory;
-
-import net.kodehawa.mantarobot.commands.currency.item.ItemStack;
+package net.kodehawa.migrator.helpers;
 
 import java.util.Comparator;
 import java.util.IdentityHashMap;

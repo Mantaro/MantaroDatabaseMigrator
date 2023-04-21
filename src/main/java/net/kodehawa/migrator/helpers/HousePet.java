@@ -15,11 +15,8 @@
  *
  */
 
-package net.kodehawa.mantarobot.commands.currency.pets;
+package net.kodehawa.migrator.helpers;
 
-import net.kodehawa.mantarobot.core.modules.commands.i18n.I18nContext;
-import net.kodehawa.mantarobot.data.MantaroData;
-import net.kodehawa.mantarobot.db.ManagedMongoObject;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 
 import java.security.SecureRandom;
@@ -285,16 +282,6 @@ public class HousePet {
         increaseExperience();
 
         return neededAbility.getPassActivity();
-    }
-
-    @BsonIgnore
-    public void updateAllChanged(ManagedMongoObject database) {
-        MantaroData.db().updateFieldValues(database, fieldTracker);
-    }
-
-    @BsonIgnore
-    public String buildMessage(ActivityResult result, I18nContext language, int money, int items) {
-        return String.format(language.get(result.getLanguageString()), getType().getEmoji(), getName(), money, items);
     }
 
     @BsonIgnore

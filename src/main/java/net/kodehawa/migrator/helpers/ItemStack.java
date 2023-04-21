@@ -15,7 +15,7 @@
  *
  */
 
-package net.kodehawa.mantarobot.commands.currency.item;
+package net.kodehawa.migrator.helpers;
 
 import java.util.ArrayList;
 import java.util.Arrays;

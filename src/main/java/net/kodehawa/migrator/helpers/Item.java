@@ -15,9 +15,8 @@
  *
  */
 
-package net.kodehawa.mantarobot.commands.currency.item;
+package net.kodehawa.migrator.helpers;
 
-import net.kodehawa.mantarobot.core.command.slash.IContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

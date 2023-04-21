@@ -15,7 +15,7 @@
  *
  */
 
-package net.kodehawa.mantarobot.utils;
+package net.kodehawa.migrator;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

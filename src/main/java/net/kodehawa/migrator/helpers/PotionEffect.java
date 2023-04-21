@@ -15,7 +15,7 @@
  *
  */
 
-package net.kodehawa.mantarobot.commands.currency.item;
+package net.kodehawa.migrator.helpers;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;

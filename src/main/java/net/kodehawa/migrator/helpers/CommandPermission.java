@@ -15,45 +15,8 @@
  *
  */
 
-package net.kodehawa.mantarobot.core.modules.commands.base;
-
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
-import net.kodehawa.mantarobot.data.MantaroData;
+package net.kodehawa.migrator.helpers;
 
 public enum CommandPermission {
-    USER() {
-        @Override
-        public boolean test(Member member) {
-            return true;
-        }
-    },
-    ADMIN() {
-        @Override
-        public boolean test(Member member) {
-            return member.isOwner() || member.hasPermission(Permission.ADMINISTRATOR) ||
-                    member.hasPermission(Permission.MANAGE_SERVER) || OWNER.test(member) ||
-                    member.getRoles().stream().anyMatch(role -> role.getName().equalsIgnoreCase("Bot Commander"));
-        }
-    },
-    OWNER() {
-        @Override
-        public boolean test(Member member) {
-            return MantaroData.config().get().isOwner(member);
-        }
-    },
-    INHERIT() {
-        @Override
-        public boolean test(Member member) {
-            throw new UnsupportedOperationException("Used by NewCommand to inherit from parent");
-        }
-    };
-
-    public abstract boolean test(Member member);
-
-    @Override
-    public String toString() {
-        String name = name().toLowerCase();
-        return Character.toUpperCase(name.charAt(0)) + name.substring(1);
-    }
+    USER, ADMIN, OWNER, INHERIT
 }

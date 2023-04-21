@@ -15,15 +15,14 @@
  *
  */
 
-package net.kodehawa.mantarobot.commands.currency.item.special.tools;
+package net.kodehawa.migrator.helpers.special.tools;
 
-import net.kodehawa.mantarobot.commands.currency.item.Item;
-import net.kodehawa.mantarobot.commands.currency.item.ItemType;
-import net.kodehawa.mantarobot.commands.currency.item.special.helpers.Castable;
-import net.kodehawa.mantarobot.commands.currency.item.special.helpers.Salvageable;
-import net.kodehawa.mantarobot.commands.currency.item.special.helpers.attributes.Attribute;
-import net.kodehawa.mantarobot.commands.currency.item.special.helpers.attributes.ItemUsage;
-import net.kodehawa.mantarobot.core.modules.commands.i18n.I18nContext;
+import net.kodehawa.migrator.helpers.Item;
+import net.kodehawa.migrator.helpers.ItemType;
+import net.kodehawa.migrator.helpers.special.helpers.Castable;
+import net.kodehawa.migrator.helpers.special.helpers.Salvageable;
+import net.kodehawa.migrator.helpers.special.helpers.attributes.Attribute;
+import net.kodehawa.migrator.helpers.special.helpers.attributes.ItemUsage;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -115,23 +114,8 @@ public class Pickaxe extends Item implements Castable, Salvageable, Attribute {
     }
 
     @Override
-    public String buildAttributes(I18nContext i18n) {
-        return """
-                **%s**\u2009 %s
-                **%s**\u2009 %,d - %,d credits
-                **%s**\u2009 0 - %,d
-                **%s (%%):**\u2009 %,.1f%% / %,.1f%%
-                """.formatted(
-                        i18n.get("commands.iteminfo.attribute.tier"),
-                        getTierStars(getCastLevelRequired()),
-                        i18n.get("commands.iteminfo.attribute.increase"),
-                        (getMoneyIncrease() / 4), getMoneyIncrease(),
-                        i18n.get("commands.iteminfo.attribute.diamond_drop"),
-                        getDiamondIncrease(),
-                        i18n.get("commands.iteminfo.attribute.gem_luck"),
-                        getChance(0, 400, getSparkleLuck()),
-                        getChance(0, 400, getGemLuck())
-                );
+    public String buildAttributes() {
+        return null;
     }
 
     @Override

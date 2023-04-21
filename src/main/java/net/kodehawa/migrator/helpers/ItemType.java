@@ -15,7 +15,7 @@
  *
  */
 
-package net.kodehawa.mantarobot.commands.currency.item;
+package net.kodehawa.migrator.helpers;
 
 public enum ItemType {
     // Commons

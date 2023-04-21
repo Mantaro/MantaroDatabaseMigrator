@@ -15,68 +15,8 @@
  *
  */
 
-package net.kodehawa.mantarobot.core.command.slash;
-
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
-import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.sharding.ShardManager;
-import net.dv8tion.jda.api.utils.messages.MessageCreateData;
-import net.kodehawa.mantarobot.core.modules.commands.i18n.I18nContext;
-import net.kodehawa.mantarobot.data.Config;
-import net.kodehawa.mantarobot.db.ManagedDatabase;
-import net.kodehawa.mantarobot.db.entities.GuildDatabase;
-import net.kodehawa.mantarobot.db.entities.MantaroObject;
-import net.kodehawa.mantarobot.db.entities.Player;
-import net.kodehawa.mantarobot.db.entities.UserDatabase;
-import net.kodehawa.mantarobot.utils.commands.UtilsContext;
-import net.kodehawa.mantarobot.utils.commands.ratelimit.RateLimitContext;
-
-import java.util.Collection;
+package net.kodehawa.migrator.helpers;
 
 public interface IContext {
-    Guild getGuild();
-    GuildMessageChannel getChannel();
-    Member getMember();
-    User getAuthor();
-    RateLimitContext ratelimitContext();
-    UtilsContext getUtilsContext();
-    I18nContext getLanguageContext();
-    void send(String s);
-    void send(MessageCreateData message);
-    void sendStripped(String s);
-    void send(MessageEmbed e);
-    void send(MessageEmbed e, ActionRow... actionRows);
-    Message sendResult(String s);
-    Message sendResult(MessageEmbed e);
-    void sendLocalized(String s, Object... args);
-    void sendLocalizedStripped(String s, Object... args);
-    void sendFormat(String message, Object... format);
-    void sendFormatStripped(String message, Object... format);
-    void sendFormat(String message, Collection<ActionRow> actionRow, Object... format);
-    ManagedDatabase db();
-    Player getPlayer();
-    UserDatabase getDBUser();
-    GuildDatabase getDBGuild();
-    Player getPlayer(User user);
-    UserDatabase getDBUser(User user);
-    ShardManager getShardManager();
-    MantaroObject getMantaroData();
-    Config getConfig();
-
-    default EmbedBuilder baseEmbed(IContext ctx, String name, String image) {
-        return new EmbedBuilder()
-                .setAuthor(name, null, image)
-                .setColor(ctx.getMember().getColor())
-                .setFooter("Requested by: %s".formatted(ctx.getMember().getEffectiveName()),
-                        ctx.getGuild().getIconUrl()
-                );
-    }
-
 }
 

@@ -15,14 +15,10 @@
  *
  */
 
-package net.kodehawa.mantarobot.core.modules.commands.base;
-
-import net.kodehawa.mantarobot.utils.Utils;
+package net.kodehawa.migrator.helpers;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public enum CommandCategory {
     MUSIC(CommandPermission.USER, "categories.music", "Audio"),
@@ -66,13 +62,6 @@ public enum CommandCategory {
     }
 
     /**
-     * @return The name of the category.
-     */
-    public static List<String> getAllNames() {
-        return Stream.of(CommandCategory.values()).map(category -> Utils.capitalize(category.qualifiedName.toLowerCase())).collect(Collectors.toList());
-    }
-
-    /**
      * @return All categories as a List. You could do Category#values anyway, this is just for my convenience.
      */
     public static List<CommandCategory> getAllCategories() {
@@ -82,9 +71,5 @@ public enum CommandCategory {
     @Override
     public String toString() {
         return s;
-    }
-
-    public String readableName() {
-        return Utils.capitalize(name().toLowerCase());
     }
 }

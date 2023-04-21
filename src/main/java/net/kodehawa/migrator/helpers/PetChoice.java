@@ -15,14 +15,8 @@
  *
  */
 
-package net.kodehawa.mantarobot.commands.currency.pets;
-
-import net.kodehawa.mantarobot.utils.Utils;
+package net.kodehawa.migrator.helpers;
 
 public enum PetChoice {
-    PERSONAL, MARRIAGE;
-
-    public String getReadableName() {
-        return Utils.capitalize(toString().toLowerCase());
-    }
+    PERSONAL, MARRIAGE
 }

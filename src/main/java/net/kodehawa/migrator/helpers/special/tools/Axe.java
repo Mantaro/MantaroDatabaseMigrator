@@ -15,15 +15,14 @@
  *
  */
 
-package net.kodehawa.mantarobot.commands.currency.item.special.tools;
+package net.kodehawa.migrator.helpers.special.tools;
 
-import net.kodehawa.mantarobot.commands.currency.item.Item;
-import net.kodehawa.mantarobot.commands.currency.item.ItemType;
-import net.kodehawa.mantarobot.commands.currency.item.special.helpers.Castable;
-import net.kodehawa.mantarobot.commands.currency.item.special.helpers.Salvageable;
-import net.kodehawa.mantarobot.commands.currency.item.special.helpers.attributes.Attribute;
-import net.kodehawa.mantarobot.commands.currency.item.special.helpers.attributes.ItemUsage;
-import net.kodehawa.mantarobot.core.modules.commands.i18n.I18nContext;
+import net.kodehawa.migrator.helpers.Item;
+import net.kodehawa.migrator.helpers.ItemType;
+import net.kodehawa.migrator.helpers.special.helpers.Castable;
+import net.kodehawa.migrator.helpers.special.helpers.Salvageable;
+import net.kodehawa.migrator.helpers.special.helpers.attributes.Attribute;
+import net.kodehawa.migrator.helpers.special.helpers.attributes.ItemUsage;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -100,16 +99,8 @@ public class Axe extends Item implements Castable, Salvageable, Attribute {
     }
 
     @Override
-    public String buildAttributes(I18nContext i18n) {
-        return """
-                **%s** %s
-                **%s** %,d - %,d credits
-                """.formatted(
-                        i18n.get("commands.iteminfo.attribute.tier"),
-                        getTierStars(getCastLevelRequired()),
-                        i18n.get("commands.iteminfo.attribute.increase"),
-                        (getMoneyIncrease() / 4), getMoneyIncrease()
-                );
+    public String buildAttributes() {
+        return null;
     }
 
     @Override

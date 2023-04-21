@@ -15,13 +15,12 @@
  *
  */
 
-package net.kodehawa.mantarobot.commands.currency.item.special.helpers.attributes;
+package net.kodehawa.migrator.helpers.special.helpers.attributes;
 
-import net.kodehawa.mantarobot.commands.currency.item.special.helpers.Breakable;
-import net.kodehawa.mantarobot.core.modules.commands.i18n.I18nContext;
+import net.kodehawa.migrator.helpers.special.helpers.Breakable;
 
 public interface Attribute extends Breakable, Tiered {
-    String buildAttributes(I18nContext i18n);
+    String buildAttributes();
     String getExplanation();
     ItemUsage getType();
 }

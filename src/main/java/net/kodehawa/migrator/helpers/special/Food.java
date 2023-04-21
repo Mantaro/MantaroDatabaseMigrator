@@ -15,11 +15,10 @@
  *
  */
 
-package net.kodehawa.mantarobot.commands.currency.item.special;
+package net.kodehawa.migrator.helpers.special;
 
-import net.kodehawa.mantarobot.commands.currency.item.Item;
-import net.kodehawa.mantarobot.commands.currency.item.ItemType;
-import net.kodehawa.mantarobot.commands.currency.pets.HousePetType;
+import net.kodehawa.migrator.helpers.Item;
+import net.kodehawa.migrator.helpers.ItemType;
 
 public class Food extends Item {
     private final int hungerLevel;
@@ -41,16 +40,6 @@ public class Food extends Item {
     }
 
     public enum FoodType {
-        CAT(HousePetType.CAT), DOG(HousePetType.DOG), HAMSTER(HousePetType.RAT), GENERAL(HousePetType.ALL);
-
-        final HousePetType applicableType;
-
-        FoodType(HousePetType applicable) {
-            this.applicableType = applicable;
-        }
-
-        public HousePetType getApplicableType() {
-            return applicableType;
-        }
+        CAT, DOG, HAMSTER, GENERAL;
     }
 }

@@ -15,11 +15,11 @@
  *
  */
 
-package net.kodehawa.mantarobot.commands.currency.item.special;
+package net.kodehawa.migrator.helpers.special;
 
-import net.kodehawa.mantarobot.commands.currency.item.Item;
-import net.kodehawa.mantarobot.commands.currency.item.ItemHelper;
-import net.kodehawa.mantarobot.commands.currency.item.ItemType;
+import net.kodehawa.migrator.helpers.Item;
+import net.kodehawa.migrator.helpers.ItemHelper;
+import net.kodehawa.migrator.helpers.ItemType;
 
 public class Broken extends Item {
     //Repair cost it's usually Item value / 3
