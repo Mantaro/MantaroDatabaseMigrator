@@ -124,7 +124,7 @@ public class Migrator {
     }
 
     public static <T extends ManagedMongoObject> void saveMongo(T object, Class<T> clazz) {
-        var collection = mongoClient.getDatabase("mantaro").getCollection(object.getTableName(), clazz);
+        var collection = mongoConnection().getDatabase("mantaro").getCollection(object.getTableName(), clazz);
         var returnDoc = new FindOneAndReplaceOptions().returnDocument(ReturnDocument.AFTER);
         var found = collection.findOneAndReplace(Filters.eq(object.getId()), object, returnDoc);
         if (found == null) { // New document?
@@ -133,7 +133,7 @@ public class Migrator {
     }
 
     public static <T extends ManagedMongoObject> void deleteMongo(T object, Class<T> clazz) {
-        MongoCollection<T> collection = mongoClient.getDatabase("mantaro").getCollection(object.getTableName(), clazz);
+        MongoCollection<T> collection = mongoConnection().getDatabase("mantaro").getCollection(object.getTableName(), clazz);
         collection.deleteOne(Filters.eq(object.getId()));
     }
 }
