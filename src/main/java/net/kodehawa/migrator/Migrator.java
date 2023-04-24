@@ -162,7 +162,7 @@ public class Migrator {
                     mongoClient = MongoClients.create(clientSettings);
                     logger.info("Established first MongoDB connection.");
                 } catch (Exception e) {
-                    logger.error("Cannot connect to database! Bailing out!", e);
+                    logger.error("Cannot connect to database (MongoDB)! Bailing out!", e);
                     System.exit(1);
                 }
             }
@@ -174,18 +174,23 @@ public class Migrator {
     public static Connection rethinkConnection() {
         if (rethinkConnection == null) {
             synchronized (Migrator.class) {
-                if (rethinkConnection != null) {
-                    return rethinkConnection;
+                try {
+                    if (rethinkConnection != null) {
+                        return rethinkConnection;
+                    }
+
+                    rethinkConnection = r.connection()
+                            .hostname(getValue("migrator.rethink_host"))
+                            .port(28015)
+                            .db("mantaro")
+                            .user(getValue("migrator.rethink_user"), getValue("migrator.rethink_pw"))
+                            .connect();
+
+                    logger.info("Established first RethinkDB connection.");
+                } catch (Exception e) {
+                    logger.error("Cannot connect to database (RethinkDB)! Bailing out!", e);
+                    System.exit(1);
                 }
-
-                rethinkConnection = r.connection()
-                        .hostname(getValue("migrator.rethink_host"))
-                        .port(28015)
-                        .db("mantaro")
-                        .user(getValue("migrator.rethink_user"), getValue("migrator.rethink_pw"))
-                        .connect();
-
-                logger.info("Established first RethinkDB connection.");
             }
         }
 
