@@ -241,8 +241,6 @@ public class Migrator {
             mongoGuild.setGameTimeoutExpectedAt(rethinkData.getGameTimeoutExpectedAt());
             mongoGuild.setIgnoreBotsAutoRole(rethinkData.isIgnoreBotsAutoRole());
             mongoGuild.setIgnoreBotsWelcomeMessage(rethinkData.isIgnoreBotsWelcomeMessage());
-            mongoGuild.setEnabledLevelUpMessages(rethinkData.isEnabledLevelUpMessages());
-            mongoGuild.setLevelUpMessage(rethinkData.getLevelUpMessage());
             mongoGuild.setBlackListedImageTags(rethinkData.getBlackListedImageTags());
             mongoGuild.setLogJoinChannel(rethinkData.getLogJoinChannel());
             mongoGuild.setLogLeaveChannel(rethinkData.getLogLeaveChannel());
