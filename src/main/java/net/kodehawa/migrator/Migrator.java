@@ -44,7 +44,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class Migrator {
-    public static Logger logger = LoggerFactory.getLogger(Migrator.class);
+    public static final Logger logger = LoggerFactory.getLogger(Migrator.class);
     public static void main(String[] args) {
         logger.info("Starting migration...\n");
 
@@ -182,6 +182,7 @@ public class Migrator {
             mongoPlayer.setPet(rethinkData.getPet());
             mongoPlayer.setBadges(rethinkData.getBadges());
             mongoPlayer.setProfileComponents(rethinkData.getProfileComponents());
+            // This takes care of the inventory format change, as merge is done as a list of ItemStack, which get serialized on save.
             mongoPlayer.mergeInventory(player.getInventory().asList());
 
             if (mongoPlayer.equals(Player.of(id))) {
