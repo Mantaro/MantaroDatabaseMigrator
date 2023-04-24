@@ -50,7 +50,7 @@ public class Migrator {
         var i = 0;
         for (var user : users) {
             var id = user.getId();
-            logger.info("Migrating user {} out of {} (id: {}", ++i, users.size(), id);
+            logger.info("Migrating user {} out of {} (id: {})", ++i, users.size(), id);
             var mongoUser = UserDatabase.of(id);
             var rtdbData = user.getData();
 
@@ -193,7 +193,7 @@ public class Migrator {
     }
 
     public static List<RethinkPlayer> getRethinkDBPlayers() {
-        logger.error("Getting all players...");
+        logger.info("Getting all players...");
         String pattern = ":g$";
         Result<RethinkPlayer> c = r.table(RethinkPlayer.DB_TABLE).filter(quote -> quote.g("id").match(pattern)).run(rethinkConnection(), RethinkPlayer.class);
         var list = c.toList();
@@ -202,7 +202,7 @@ public class Migrator {
     }
 
     public static List<RethinkMarriage> getRethinkDBMarriages() {
-        System.out.println("Getting all marriages...");
+        logger.info("Getting all marriages...");
         Result<RethinkMarriage> c = r.table(RethinkMarriage.DB_TABLE).run(rethinkConnection(), RethinkMarriage.class);
         var list = c.toList();
         logger.error("Got all marriages, list size is: {}", list.size());
@@ -210,7 +210,7 @@ public class Migrator {
     }
 
     public static List<RethinkPremiumKey> getRethinkDBPremiumKeys() {
-        System.out.println("Getting all keys...");
+        logger.info("Getting all keys...");
         Result<RethinkPremiumKey> c = r.table(RethinkPremiumKey.DB_TABLE).run(rethinkConnection(), RethinkPremiumKey.class);
         var list = c.toList();
         logger.error("Got all keys, list size is: {}", list.size());
@@ -218,7 +218,7 @@ public class Migrator {
     }
 
     public static List<RethinkUser> getRethinkDBUsers() {
-        System.out.println("Getting all users...");
+        logger.info("Getting all users...");
         Result<RethinkUser> c = r.table(RethinkUser.DB_TABLE).run(rethinkConnection(), RethinkUser.class);
         var list = c.toList();
         logger.error("Got all users, list size is: {}", list.size());
@@ -226,7 +226,7 @@ public class Migrator {
     }
 
     public static List<RethinkCustomCommand> getRethinkCC() {
-        System.out.println("Getting all custom commands...");
+        logger.info("Getting all custom commands...");
         Result<RethinkCustomCommand> c = r.table(RethinkCustomCommand.DB_TABLE).run(rethinkConnection(), RethinkCustomCommand.class);
         var list = c.toList();
         logger.error("Got all custom commands, list size is: {}", list.size());
@@ -267,8 +267,8 @@ public class Migrator {
                 return;
             }
 
-            logger.info("Saved to Mongo: " + object);
             collection.insertOne(object);
+            logger.info("Saved id {} to Mongo: {}", object.getId(), object);
         } catch (Exception e) {
             logger.error("Error saving object!", e);
         }
