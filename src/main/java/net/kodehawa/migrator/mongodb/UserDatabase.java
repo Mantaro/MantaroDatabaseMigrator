@@ -27,6 +27,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 // Reminder: all setters MUST be public!
 public class UserDatabase implements ManagedMongoObject {
@@ -334,5 +335,18 @@ public class UserDatabase implements ManagedMongoObject {
 
     public long getPremiumUntil() {
         return this.premiumUntil;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDatabase that = (UserDatabase) o;
+        return premiumUntil == that.premiumUntil && receivedFirstKey == that.receivedFirstKey && remindedTimes == that.remindedTimes && dustLevel == that.dustLevel && receivedExpirationWarning == that.receivedExpirationWarning && waifuSlots == that.waifuSlots && timesClaimed == that.timesClaimed && privateTag == that.privateTag && autoEquip == that.autoEquip && actionsDisabled == that.actionsDisabled && Objects.equals(fieldTracker, that.fieldTracker) && Objects.equals(id, that.id) && Objects.equals(birthday, that.birthday) && Objects.equals(premiumKey, that.premiumKey) && Objects.equals(timezone, that.timezone) && Objects.equals(lang, that.lang) && Objects.equals(equippedItems, that.equippedItems) && Objects.equals(keysClaimed, that.keysClaimed) && Objects.equals(marriageId, that.marriageId) && Objects.equals(waifus, that.waifus) && Objects.equals(reminders, that.reminders);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fieldTracker, id, premiumUntil, birthday, receivedFirstKey, premiumKey, remindedTimes, timezone, lang, dustLevel, equippedItems, receivedExpirationWarning, keysClaimed, marriageId, waifus, waifuSlots, timesClaimed, reminders, privateTag, autoEquip, actionsDisabled);
     }
 }
