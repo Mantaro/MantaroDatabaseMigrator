@@ -18,9 +18,7 @@
 package net.kodehawa.migrator.mongodb;
 
 import net.kodehawa.migrator.Migrator;
-import org.bson.Document;
 import org.bson.codecs.pojo.annotations.BsonCreator;
-import org.bson.codecs.pojo.annotations.BsonExtraElements;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;
@@ -38,9 +36,6 @@ public class CustomCommand implements ManagedMongoObject {
     private String owner;
     private boolean nsfw;
     private boolean locked;
-
-    @BsonExtraElements
-    public Document extra;
 
     @BsonCreator
     public CustomCommand(@BsonId String id, @BsonProperty("guildId") String guildId, @BsonProperty("values") List<String> values,
