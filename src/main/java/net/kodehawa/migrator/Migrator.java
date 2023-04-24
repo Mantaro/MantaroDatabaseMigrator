@@ -11,6 +11,7 @@ import com.rethinkdb.net.Connection;
 import com.rethinkdb.net.Result;
 import net.kodehawa.migrator.mongodb.CustomCommand;
 import net.kodehawa.migrator.mongodb.ManagedMongoObject;
+import net.kodehawa.migrator.mongodb.Marriage;
 import net.kodehawa.migrator.mongodb.PremiumKey;
 import net.kodehawa.migrator.mongodb.UserDatabase;
 import net.kodehawa.migrator.mongodb.codecs.MapCodecProvider;
@@ -39,10 +40,9 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class Migrator {
     public static void main(String[] args) {
-        System.out.println("Starting migration...");
-        System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n");
+        System.out.println("Starting migration...\n");
 
-        System.out.println("Started user migration...");
+        System.out.println("Started User migration...");
         var users = getRethinkDBUsers();
         var i = 0;
         for (var user : users) {
@@ -74,10 +74,9 @@ public class Migrator {
             mongoUser.save();
         }
 
-        System.out.println("Finished user migration.");
-        System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n");
+        System.out.println("!!! Finished User migration.\n");
 
-        System.out.println("Started key migration...");
+        System.out.println("Started Key migration...");
         var keys = getRethinkDBPremiumKeys();
         i = 0;
         for (var key : keys) {
@@ -88,15 +87,14 @@ public class Migrator {
             mongoKey.save();
         }
 
-        System.out.println("Finished key migration.");
-        System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n");
+        System.out.println("!!! Finished Key migration.\n");
 
-        System.out.println("Started custom migration...");
+        System.out.println("Started Custom Commands migration...");
         var customs = getRethinkCC();
         i = 0;
         for (var custom : customs) {
             var id = custom.getId();
-            System.out.println("Migrating CC " + ++i + " out of " + keys.size() + " (id: " + id + ")");
+            System.out.println("Migrating CC " + ++i + " out of " + customs.size() + " (id: " + id + ")");
             var mongoCustom = CustomCommand.of(custom.getGuildId(), custom.getName(), custom.getValues());
             mongoCustom.setLocked(custom.getData().isLocked());
             mongoCustom.setNsfw(custom.getData().isNsfw());
@@ -105,8 +103,26 @@ public class Migrator {
             mongoCustom.save();
         }
 
-        System.out.println("Finished custom migration.");
-        System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n");
+        System.out.println("!!! Finished Custom Commands migration.\n");
+
+        System.out.println("Started Marriage migration...");
+        var marriages = getRethinkDBMarriages();
+        i = 0;
+        for (var marriage : marriages) {
+            var id = marriage.getId();
+            System.out.println("Migrating Marriage " + ++i + " out of " + marriages.size() + " (id: " + id + ")");
+            var mongoMarriage = Marriage.of(id, marriage.getPlayer1(), marriage.getPlayer2());
+            mongoMarriage.carName(marriage.getData().getCarName());
+            mongoMarriage.houseName(marriage.getData().getHouseName());
+            mongoMarriage.loveLetter(marriage.getData().getLoveLetter());
+            mongoMarriage.timezone(marriage.getData().getTimezone());
+            mongoMarriage.car(marriage.getData().hasCar());
+            mongoMarriage.house(marriage.getData().hasHouse());
+
+            mongoMarriage.save();
+        }
+
+        System.out.println("!!! Finished Marriage migration.\n");
     }
 
     private static Connection rethinkConnection;
@@ -238,19 +254,20 @@ public class Migrator {
     }
 
     public static <T extends ManagedMongoObject> void saveMongo(T object, Class<T> clazz) {
-        var collection = mongoConnection().getDatabase("mantaro").getCollection(object.getTableName(), clazz);
         try {
+            var collection = mongoConnection().getDatabase("mantaro").getCollection(object.getTableName(), clazz);
             if (collection.find().filter(Filters.eq(object.getId())).first() != null) {
                 System.out.println("Skipping save: object already exists?");
                 return;
             }
+
+            System.out.println("Saved to Mongo: " + object);
+            collection.insertOne(object);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        System.out.println("Saved to Mongo: " + object);
-        collection.insertOne(object);
     }
+
 
     public static <T extends ManagedMongoObject> void deleteMongo(T object, Class<T> clazz) {
         MongoCollection<T> collection = mongoConnection().getDatabase("mantaro").getCollection(object.getTableName(), clazz);

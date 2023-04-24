@@ -78,11 +78,9 @@ public class Marriage implements ManagedMongoObject {
     private long marriageCreationMillis;
     private String loveLetter;
 
-    @BsonProperty("hasHouse")
     private boolean hasHouse;
     private String houseName;
 
-    @BsonProperty("hasCar")
     private boolean hasCar;
     private String carName;
 
@@ -193,13 +191,13 @@ public class Marriage implements ManagedMongoObject {
     }
 
     @BsonIgnore
-    public void setCar(boolean car) {
+    public void car(boolean car) {
         this.hasCar = car;
         fieldTracker.put("hasCar", this.hasCar);
     }
 
     @BsonIgnore
-    public void setHouse(boolean house) {
+    public void house(boolean house) {
         this.hasCar = house;
         fieldTracker.put("hasHouse", this.hasHouse);
     }
