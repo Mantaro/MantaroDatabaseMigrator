@@ -185,7 +185,7 @@ public class Migrator {
                         .user(getValue("migrator.rethink_user"), getValue("migrator.rethink_pw"))
                         .connect();
 
-                logger.error("Established first RethinkDB connection.");
+                logger.info("Established first RethinkDB connection.");
             }
         }
 
@@ -197,7 +197,7 @@ public class Migrator {
         String pattern = ":g$";
         Result<RethinkPlayer> c = r.table(RethinkPlayer.DB_TABLE).filter(quote -> quote.g("id").match(pattern)).run(rethinkConnection(), RethinkPlayer.class);
         var list = c.toList();
-        logger.error("Got all players, list size is: {}", list.size());
+        logger.info("Got all players, list size is: {}", list.size());
         return list;
     }
 
@@ -205,7 +205,7 @@ public class Migrator {
         logger.info("Getting all marriages...");
         Result<RethinkMarriage> c = r.table(RethinkMarriage.DB_TABLE).run(rethinkConnection(), RethinkMarriage.class);
         var list = c.toList();
-        logger.error("Got all marriages, list size is: {}", list.size());
+        logger.info("Got all marriages, list size is: {}", list.size());
         return list;
     }
 
@@ -213,7 +213,7 @@ public class Migrator {
         logger.info("Getting all keys...");
         Result<RethinkPremiumKey> c = r.table(RethinkPremiumKey.DB_TABLE).run(rethinkConnection(), RethinkPremiumKey.class);
         var list = c.toList();
-        logger.error("Got all keys, list size is: {}", list.size());
+        logger.info("Got all keys, list size is: {}", list.size());
         return list;
     }
 
@@ -221,7 +221,7 @@ public class Migrator {
         logger.info("Getting all users...");
         Result<RethinkUser> c = r.table(RethinkUser.DB_TABLE).run(rethinkConnection(), RethinkUser.class);
         var list = c.toList();
-        logger.error("Got all users, list size is: {}", list.size());
+        logger.info("Got all users, list size is: {}", list.size());
         return list;
     }
 
@@ -229,7 +229,7 @@ public class Migrator {
         logger.info("Getting all custom commands...");
         Result<RethinkCustomCommand> c = r.table(RethinkCustomCommand.DB_TABLE).run(rethinkConnection(), RethinkCustomCommand.class);
         var list = c.toList();
-        logger.error("Got all custom commands, list size is: {}", list.size());
+        logger.info("Got all custom commands, list size is: {}", list.size());
         return list;
     }
 
