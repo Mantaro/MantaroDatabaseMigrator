@@ -23,6 +23,7 @@ import org.bson.codecs.pojo.annotations.BsonIgnore;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class PlayerStats implements ManagedMongoObject {
     @BsonIgnore
@@ -157,6 +158,22 @@ public class PlayerStats implements ManagedMongoObject {
         this.salvagedItems = salvagedItems;
     }
 
+    public void setGambleWins(long gambleWins) {
+        this.gambleWins = gambleWins;
+    }
+
+    public void setSlotsWins(long slotsWins) {
+        this.slotsWins = slotsWins;
+    }
+
+    public void setGambleWinAmount(long gambleWinAmount) {
+        this.gambleWinAmount = gambleWinAmount;
+    }
+
+    public void setSlotsWinAmount(long slotsWinAmount) {
+        this.slotsWinAmount = slotsWinAmount;
+    }
+
     @BsonIgnore
     public void addGambleWin(long amount) {
         this.gambleWinAmount += amount;
@@ -243,5 +260,18 @@ public class PlayerStats implements ManagedMongoObject {
     @Override
     public void delete() {
         Migrator.deleteMongo(this, PlayerStats.class);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlayerStats that = (PlayerStats) o;
+        return gambleWins == that.gambleWins && slotsWins == that.slotsWins && gambleWinAmount == that.gambleWinAmount && slotsWinAmount == that.slotsWinAmount && craftedItems == that.craftedItems && repairedItems == that.repairedItems && salvagedItems == that.salvagedItems && toolsBroken == that.toolsBroken && looted == that.looted && mined == that.mined && gambleLose == that.gambleLose && slotsLose == that.slotsLose && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, gambleWins, slotsWins, gambleWinAmount, slotsWinAmount, craftedItems, repairedItems, salvagedItems, toolsBroken, looted, mined, gambleLose, slotsLose);
     }
 }

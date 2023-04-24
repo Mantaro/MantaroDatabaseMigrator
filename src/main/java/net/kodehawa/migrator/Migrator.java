@@ -14,6 +14,7 @@ import net.kodehawa.migrator.mongodb.GuildDatabase;
 import net.kodehawa.migrator.mongodb.ManagedMongoObject;
 import net.kodehawa.migrator.mongodb.Marriage;
 import net.kodehawa.migrator.mongodb.Player;
+import net.kodehawa.migrator.mongodb.PlayerStats;
 import net.kodehawa.migrator.mongodb.PremiumKey;
 import net.kodehawa.migrator.mongodb.UserDatabase;
 import net.kodehawa.migrator.mongodb.codecs.MapCodecProvider;
@@ -22,6 +23,7 @@ import net.kodehawa.migrator.rethinkdb.RethinkCustomCommand;
 import net.kodehawa.migrator.rethinkdb.RethinkGuild;
 import net.kodehawa.migrator.rethinkdb.RethinkMarriage;
 import net.kodehawa.migrator.rethinkdb.RethinkPlayer;
+import net.kodehawa.migrator.rethinkdb.RethinkPlayerStats;
 import net.kodehawa.migrator.rethinkdb.RethinkPremiumKey;
 import net.kodehawa.migrator.rethinkdb.RethinkUser;
 import org.bson.codecs.configuration.CodecProvider;
@@ -197,6 +199,33 @@ public class Migrator {
         }
 
         logger.info("!!! Finished Player migration.\n");
+
+        logger.info("Started Player Statistics migration...");
+        var playerStats = getRethinkPlayerStats();
+        i = 0;
+        for (var stat : playerStats) {
+            var id = stat.getId();
+            logger.info("Migrating PlayerStats {} out of {} (id: {})", ++i, playerStats.size(), id);
+            var mongoStat = PlayerStats.of(id);
+            mongoStat.setCraftedItems(stat.getCraftedItems());
+            mongoStat.setToolsBroken(stat.getToolsBroken());
+            mongoStat.setGambleWinAmount(stat.getGambleWinAmount());
+            mongoStat.setGambleWins(stat.getGambleWins());
+            mongoStat.setSlotsWins(stat.getSlotsWins());
+            mongoStat.setRepairedItems(stat.getRepairedItems());
+            mongoStat.setSalvagedItems(stat.getSalvagedItems());
+            mongoStat.setGambleLose(stat.getData().getGambleLose());
+            mongoStat.setSlotsLose(stat.getData().getSlotsLose());
+
+            if (mongoStat.equals(PlayerStats.of(id))) {
+                logger.warn("Unchanged object id {}, skipping...", id);
+                continue;
+            }
+
+            mongoStat.save();
+        }
+
+        logger.info("!!! Finished Player Statistics migration.\n");
 
         logger.info("Started Guild migration...");
         var guilds = getRethinkGuilds();
@@ -395,6 +424,14 @@ public class Migrator {
         Result<RethinkGuild> c = r.table(RethinkGuild.DB_TABLE).run(rethinkConnection(), RethinkGuild.class);
         var list = c.toList();
         logger.info("Got all guilds, list size is: {}", list.size());
+        return list;
+    }
+
+    public static List<RethinkPlayerStats> getRethinkPlayerStats() {
+        logger.info("Getting all guilds...");
+        Result<RethinkPlayerStats> c = r.table(RethinkPlayerStats.DB_TABLE).run(rethinkConnection(), RethinkPlayerStats.class);
+        var list = c.toList();
+        logger.info("Got all player statistics, list size is: {}", list.size());
         return list;
     }
 
