@@ -19,6 +19,8 @@ package net.kodehawa.migrator.helpers;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.bson.codecs.pojo.annotations.BsonCreator;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.beans.ConstructorProperties;
 import java.util.UUID;
@@ -32,8 +34,9 @@ public class PotionEffect {
     private long amountEquipped = 1;
 
     @JsonCreator
+    @BsonCreator
     @ConstructorProperties({"potionId", "until", "type"})
-    public PotionEffect(int potionId, long until, ItemType.PotionType type) {
+    public PotionEffect(@BsonProperty("potion") int potionId, @BsonProperty("until") long until, @BsonProperty("type") ItemType.PotionType type) {
         uuid = UUID.randomUUID().toString();
         this.potion = potionId;
         this.until = until;

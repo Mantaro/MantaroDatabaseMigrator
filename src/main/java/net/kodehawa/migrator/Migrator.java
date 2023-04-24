@@ -79,7 +79,7 @@ public class Migrator {
 
             if (mongoUser.equals(UserDatabase.of(id))) {
                 logger.warn("Unchanged object id {}, skipping...", id);
-                return;
+                continue;
             }
 
             mongoUser.save();
@@ -148,7 +148,10 @@ public class Migrator {
             mongoPlayer.setOldMoney(player.getOldMoney());
             mongoPlayer.setNewMoney(rethinkData.getNewMoney());
             mongoPlayer.reputation(player.getReputation());
-            mongoPlayer.setExperience(rethinkData.getExperience());
+            if (rethinkData.getExperience() > 2000) { // Avoid a bunch of 1~150 experience and nothing else changed objects.
+                mongoPlayer.setExperience(rethinkData.getExperience());
+            }
+
             mongoPlayer.dailyStreak(rethinkData.getDailyStreak());
             mongoPlayer.description(rethinkData.getDescription());
             mongoPlayer.gamesWon(rethinkData.getGamesWon());
@@ -187,7 +190,7 @@ public class Migrator {
 
             if (mongoPlayer.equals(Player.of(id))) {
                 logger.warn("Unchanged object id {}, skipping...", id);
-                return;
+                continue;
             }
 
             mongoPlayer.save();
@@ -274,7 +277,7 @@ public class Migrator {
 
             if (mongoGuild.equals(GuildDatabase.of(id))) {
                 logger.warn("Unchanged object id {}, skipping...", id);
-                return;
+                continue;
             }
 
             mongoGuild.save();
