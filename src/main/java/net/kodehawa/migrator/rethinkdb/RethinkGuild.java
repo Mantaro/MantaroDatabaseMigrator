@@ -19,30 +19,36 @@ package net.kodehawa.migrator.rethinkdb;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import net.kodehawa.migrator.rethinkdb.helpers.UserData;
+import net.kodehawa.migrator.rethinkdb.helpers.GuildData;
 
 import java.beans.ConstructorProperties;
 
-public class DBUser implements ManagedObject {
-    public static final String DB_TABLE = "users";
-    private final UserData data;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class RethinkGuild implements ManagedObject {
+    public static final String DB_TABLE = "guilds";
+    private final GuildData data;
     private final String id;
-    private final long premiumUntil;
+    private long premiumUntil;
 
     @JsonCreator
     @ConstructorProperties({"id", "premiumUntil", "data"})
-    public DBUser(@JsonProperty("id") String id, @JsonProperty("premiumUntil") long premiumUntil, @JsonProperty("data") UserData data) {
+    public RethinkGuild(@JsonProperty("id") String id, @JsonProperty("premiumUntil") long premiumUntil, @JsonProperty("data") GuildData data) {
         this.id = id;
         this.premiumUntil = premiumUntil;
         this.data = data;
     }
 
-    public static DBUser of(String id) {
-        return new DBUser(id, 0, new UserData());
+    public static RethinkGuild of(String id) {
+        return new RethinkGuild(id, 0, new GuildData());
     }
 
-    public UserData getData() {
+    public static RethinkGuild of(String id, long premiumUntil) {
+        return new RethinkGuild(id, premiumUntil, new GuildData());
+    }
+
+    public GuildData getData() {
         return this.data;
     }
 
@@ -52,6 +58,7 @@ public class DBUser implements ManagedObject {
 
     @JsonIgnore
     @Override
+    
     public String getTableName() {
         return DB_TABLE;
     }
@@ -59,5 +66,4 @@ public class DBUser implements ManagedObject {
     public long getPremiumUntil() {
         return this.premiumUntil;
     }
-
 }

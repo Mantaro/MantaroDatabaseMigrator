@@ -17,12 +17,13 @@
 
 package net.kodehawa.migrator.helpers;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import net.kodehawa.migrator.helpers.special.helpers.Breakable;
 import net.kodehawa.migrator.helpers.special.tools.Axe;
 import net.kodehawa.migrator.helpers.special.tools.FishRod;
 import net.kodehawa.migrator.helpers.special.tools.Pickaxe;
 import net.kodehawa.migrator.helpers.special.tools.Wrench;
-import net.kodehawa.migrator.mongodb.UserDatabase;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;
@@ -39,8 +40,11 @@ public class PlayerEquipment {
     @BsonIgnore
     public Map<String, Object> fieldTracker = new HashMap<>();
 
+    @JsonCreator
     @BsonCreator
-    public PlayerEquipment(@BsonProperty("equipment") Map<EquipmentType, Integer> equipment, @BsonProperty("effects") Map<EquipmentType, PotionEffect> effects, @BsonProperty("durability") Map<EquipmentType, Integer> durability) {
+    public PlayerEquipment(@JsonProperty("equipment") @BsonProperty("equipment") Map<EquipmentType, Integer> equipment,
+                           @JsonProperty("effects") @BsonProperty("effects") Map<EquipmentType, PotionEffect> effects,
+                           @JsonProperty("durability") @BsonProperty("durability") Map<EquipmentType, Integer> durability) {
         this.equipment = equipment == null ? new HashMap<>() : equipment;
         this.effects = effects == null ? new HashMap<>() : effects;
         this.durability = durability == null ? new HashMap<>() : durability;

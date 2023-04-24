@@ -25,7 +25,7 @@ import net.kodehawa.migrator.rethinkdb.helpers.MarriageData;
 import java.beans.ConstructorProperties;
 
 @SuppressWarnings("ClassCanBeRecord")
-public class Marriage implements ManagedObject {
+public class RethinkMarriage implements ManagedObject {
     public static final String DB_TABLE = "marriages";
     private final String player1;
     private final String player2;
@@ -34,7 +34,7 @@ public class Marriage implements ManagedObject {
 
     @JsonCreator
     @ConstructorProperties({"id", "player1", "player2", "data"})
-    public Marriage(@JsonProperty("id") String id, @JsonProperty("player1") String player1, @JsonProperty("player2") String player2, MarriageData data) {
+    public RethinkMarriage(@JsonProperty("id") String id, @JsonProperty("player1") String player1, @JsonProperty("player2") String player2, MarriageData data) {
         this.id = id;
         this.player1 = player1;
         this.player2 = player2;
@@ -46,8 +46,8 @@ public class Marriage implements ManagedObject {
      *
      * @return The new Marriage.
      */
-    public static Marriage of(String marriageId, String userId1, String userId2) {
-        return new Marriage(marriageId, userId1, userId2, new MarriageData());
+    public static RethinkMarriage of(String marriageId, String userId1, String userId2) {
+        return new RethinkMarriage(marriageId, userId1, userId2, new MarriageData());
     }
 
     @JsonIgnore

@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// Reminder: all setters MUST be protected!
+// Reminder: all setters MUST be public!
 public class UserDatabase implements ManagedMongoObject {
     @BsonIgnore
     public static final String DB_TABLE = "users";
@@ -68,7 +68,7 @@ public class UserDatabase implements ManagedMongoObject {
     // Mongo serialization
     public UserDatabase() { }
 
-    protected UserDatabase(String id, long premiumUntil) {
+    public UserDatabase(String id, long premiumUntil) {
         this.id = id;
         this.premiumUntil = premiumUntil;
     }
@@ -139,19 +139,14 @@ public class UserDatabase implements ManagedMongoObject {
         return this.receivedExpirationWarning;
     }
 
-    // Protected: DO NOT INTERACT DIRECTLY WITH, CHANGES TO THE MAP FROM THIS METHOD WILL NOT BE UPDATED
-    protected Map<String, Long> getWaifus() {
+    public Map<String, Long> getWaifus() {
         return this.waifus;
     }
 
-    // DO NOT INTERACT DIRECTLY WITH, CHANGES TO THE MAP FROM THIS METHOD WILL NOT BE UPDATED
-    // Needed to be public: need to access for non-modifying iterations, making another method would be superfluous.
     public Map<String, String> getKeysClaimed() {
         return this.keysClaimed;
     }
 
-    // DO NOT INTERACT DIRECTLY WITH, CHANGES TO THE LIST FROM THIS METHOD WILL NOT BE UPDATED
-    // Needed to be public: need to access for non-modifying iterations, making another method would be superfluous.
     public List<String> getReminders() {
         return this.reminders;
     }
@@ -167,77 +162,81 @@ public class UserDatabase implements ManagedMongoObject {
     }
 
     // --- Setters needed for serialization (unless I want to make the structure more rigid and use a constructor)
-    protected void setLang(String lang) {
+    public void setLang(String lang) {
         this.lang = lang;
     }
 
-    protected void setBirthday(String birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
-    protected void setPremiumKey(String premiumKey) {
+    public void setPremiumKey(String premiumKey) {
         this.premiumKey = premiumKey;
     }
 
-    protected void setTimezone(String timezone) {
+    public void setTimezone(String timezone) {
         this.timezone = timezone;
     }
 
-    protected void setDustLevel(int dustLevel) {
+    public void setDustLevel(int dustLevel) {
         this.dustLevel = dustLevel;
     }
 
-    protected void setMarriageId(String marriageId) {
+    public void setMarriageId(String marriageId) {
         this.marriageId = marriageId;
     }
 
-    protected void setWaifuSlots(int waifuSlots) {
+    public void setWaifuSlots(int waifuSlots) {
         this.waifuSlots = waifuSlots;
     }
 
-    protected void setTimesClaimed(int timesClaimed) {
+    public void setTimesClaimed(int timesClaimed) {
         this.timesClaimed = timesClaimed;
     }
 
-    protected void setPrivateTag(boolean privateTag) {
+    public void setPrivateTag(boolean privateTag) {
         this.privateTag = privateTag;
     }
 
-    protected void setAutoEquip(boolean autoEquip) {
+    public void setAutoEquip(boolean autoEquip) {
         this.autoEquip = autoEquip;
     }
 
-    protected void setActionsDisabled(boolean actionsDisabled) {
+    public void setActionsDisabled(boolean actionsDisabled) {
         this.actionsDisabled = actionsDisabled;
     }
 
-    protected void setReceivedFirstKey(boolean hasReceivedFirstKey) {
+    public void setReceivedFirstKey(boolean hasReceivedFirstKey) {
         this.receivedFirstKey = hasReceivedFirstKey;
     }
 
-    protected void setReceivedExpirationWarning(boolean receivedExpirationWarning) {
+    public void setReceivedExpirationWarning(boolean receivedExpirationWarning) {
         this.receivedExpirationWarning = receivedExpirationWarning;
     }
 
     // --- Unused (?) setters, also definitely needed for serialization.
-    protected void setWaifus(Map<String, Long> waifus) {
+    public void setWaifus(Map<String, Long> waifus) {
         this.waifus = waifus;
     }
 
-    protected void setReminders(List<String> reminders) {
+    public void setReminders(List<String> reminders) {
         this.reminders = reminders;
     }
 
-    protected void setRemindedTimes(int remindedTimes) {
+    public void setRemindedTimes(int remindedTimes) {
         this.remindedTimes = remindedTimes;
     }
 
-    protected void setEquippedItems(PlayerEquipment equippedItems) {
+    public void setEquippedItems(PlayerEquipment equippedItems) {
         this.equippedItems = equippedItems;
     }
 
-    protected void setKeysClaimed(Map<String, String> keysClaimed) {
+    public void setKeysClaimed(Map<String, String> keysClaimed) {
         this.keysClaimed = keysClaimed;
+    }
+
+    public void setPremiumUntil(long premiumUntil) {
+        this.premiumUntil = premiumUntil;
     }
 
     // --- Track changes to use update

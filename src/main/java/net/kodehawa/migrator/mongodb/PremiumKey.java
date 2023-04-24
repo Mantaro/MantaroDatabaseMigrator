@@ -19,6 +19,7 @@ package net.kodehawa.migrator.mongodb;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import net.kodehawa.migrator.Migrator;
+import net.kodehawa.migrator.helpers.special.helpers.KeyType;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 
@@ -38,7 +39,7 @@ public class PremiumKey implements ManagedMongoObject {
 
     public PremiumKey() {}
 
-    public PremiumKey(String id, long duration, long expiration, Type type, boolean enabled, String owner, String linkedTo) {
+    public PremiumKey(String id, long duration, long expiration, KeyType type, boolean enabled, String owner, String linkedTo) {
         this.id = id;
         this.duration = duration;
         this.expiration = expiration;
@@ -85,10 +86,6 @@ public class PremiumKey implements ManagedMongoObject {
 
     public int getType() {
         return this.type;
-    }
-
-    public enum Type {
-        MASTER, USER, GUILD
     }
 
     @Override

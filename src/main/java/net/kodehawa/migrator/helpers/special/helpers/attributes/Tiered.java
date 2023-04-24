@@ -17,20 +17,6 @@
 
 package net.kodehawa.migrator.helpers.special.helpers.attributes;
 
-import org.apache.commons.lang3.StringUtils;
-
 public interface Tiered {
     int getTier();
-
-    default String getTierStars() {
-        return StringUtils.repeat('⭐', getTier());
-    }
-
-    default String getTierStars(int stars) {
-        if (stars == -1 || stars == 0) {
-            return "none";
-        }
-
-        return StringUtils.repeat('⭐', stars);
-    }
 }

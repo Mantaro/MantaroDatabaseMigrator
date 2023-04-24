@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CustomCommand implements ManagedObject {
+public class RethinkCustomCommand implements ManagedObject {
     public static final String DB_TABLE = "commands";
     private final String id;
     private final List<String> values;
@@ -38,19 +38,19 @@ public class CustomCommand implements ManagedObject {
 
     @ConstructorProperties({"id", "values"})
     @JsonCreator
-    public CustomCommand(@JsonProperty("id") String id, @JsonProperty("values") List<String> values, @JsonProperty("data") CustomCommandData data) {
+    public RethinkCustomCommand(@JsonProperty("id") String id, @JsonProperty("values") List<String> values, @JsonProperty("data") CustomCommandData data) {
         this.id = id;
         this.values = values.stream().map(Migrator::decodeURL).collect(Collectors.toList());
         if (data != null)
             this.data = data;
     }
 
-    public static CustomCommand of(String guildId, String cmdName, List<String> responses) {
-        return new CustomCommand(guildId + ":" + cmdName, responses.stream().map(Migrator::encodeURL).collect(Collectors.toList()), new CustomCommandData());
+    public static RethinkCustomCommand of(String guildId, String cmdName, List<String> responses) {
+        return new RethinkCustomCommand(guildId + ":" + cmdName, responses.stream().map(Migrator::encodeURL).collect(Collectors.toList()), new CustomCommandData());
     }
 
-    public static CustomCommand transfer(String guildId, CustomCommand command) {
-        return new CustomCommand(guildId + ":" + command.getName(), command.getValues(), command.getData());
+    public static RethinkCustomCommand transfer(String guildId, RethinkCustomCommand command) {
+        return new RethinkCustomCommand(guildId + ":" + command.getName(), command.getValues(), command.getData());
     }
 
     @JsonProperty("values")

@@ -32,7 +32,7 @@ import static net.kodehawa.migrator.rethinkdb.helpers.Inventory.Resolver.seriali
 import static net.kodehawa.migrator.rethinkdb.helpers.Inventory.Resolver.unserialize;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Player implements ManagedObject {
+public class RethinkPlayer implements ManagedObject {
     public static final String DB_TABLE = "players";
     @JsonProperty("data")
     private final PlayerData data;
@@ -51,7 +51,7 @@ public class Player implements ManagedObject {
 
     @JsonCreator
     @ConstructorProperties({"id", "level", "money", "reputation", "inventory", "data"})
-    public Player(@JsonProperty("id") String id, @JsonProperty("level") Long level, @JsonProperty("money") Long oldMoney, @JsonProperty("reputation") Long reputation, @JsonProperty("inventory") Map<Integer, Integer> inventory, @JsonProperty("data") PlayerData data) {
+    public RethinkPlayer(@JsonProperty("id") String id, @JsonProperty("level") Long level, @JsonProperty("money") Long oldMoney, @JsonProperty("reputation") Long reputation, @JsonProperty("inventory") Map<Integer, Integer> inventory, @JsonProperty("data") PlayerData data) {
         this.id = id;
         this.level = level == null ? 0 : level;
         this.oldMoney = oldMoney == null ? 0 : oldMoney;
@@ -67,8 +67,8 @@ public class Player implements ManagedObject {
      * @param userId The user to create or reset.
      * @return The new Player.
      */
-    public static Player of(String userId) {
-        return new Player(userId + ":g", 0L, 0L, 0L, new HashMap<>(), new PlayerData());
+    public static RethinkPlayer of(String userId) {
+        return new RethinkPlayer(userId + ":g", 0L, 0L, 0L, new HashMap<>(), new PlayerData());
     }
 
     /**

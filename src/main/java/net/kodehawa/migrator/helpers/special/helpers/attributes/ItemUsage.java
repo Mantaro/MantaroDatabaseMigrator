@@ -17,13 +17,6 @@
 
 package net.kodehawa.migrator.helpers.special.helpers.attributes;
 
-import net.kodehawa.mantarobot.utils.Utils;
-
 public enum ItemUsage {
     MINING, FISHING, CHOPPING, CASTING;
-
-    @Override
-    public String toString() {
-        return Utils.capitalize(super.toString());
-    }
 }

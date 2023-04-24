@@ -24,7 +24,7 @@ import net.kodehawa.migrator.rethinkdb.helpers.PlayerStatsData;
 
 import java.beans.ConstructorProperties;
 
-public class PlayerStats implements ManagedObject {
+public class RethinkPlayerStats implements ManagedObject {
     public static final String DB_TABLE = "playerstats";
 
     private final String id;
@@ -40,7 +40,7 @@ public class PlayerStats implements ManagedObject {
 
     @JsonCreator
     @ConstructorProperties({"id", "gambleWins", "slotsWins", "gambleWinAmount", "slotsWinAmount", "data"})
-    public PlayerStats(@JsonProperty("id") String id, @JsonProperty("gambleWins") long gambleWins, @JsonProperty("slotsWins") long slotsWins, @JsonProperty("gambleWinAmount") long gambleWinAmount, @JsonProperty("slotsWinAmount") long slotsWinAmount, @JsonProperty("data") PlayerStatsData data) {
+    public RethinkPlayerStats(@JsonProperty("id") String id, @JsonProperty("gambleWins") long gambleWins, @JsonProperty("slotsWins") long slotsWins, @JsonProperty("gambleWinAmount") long gambleWinAmount, @JsonProperty("slotsWinAmount") long slotsWinAmount, @JsonProperty("data") PlayerStatsData data) {
         this.id = id;
         this.gambleWins = gambleWins;
         this.slotsWins = slotsWins;
@@ -49,8 +49,8 @@ public class PlayerStats implements ManagedObject {
         this.data = data;
     }
 
-    public static PlayerStats of(String userId) {
-        return new PlayerStats(userId, 0L, 0L, 0L, 0L, new PlayerStatsData());
+    public static RethinkPlayerStats of(String userId) {
+        return new RethinkPlayerStats(userId, 0L, 0L, 0L, 0L, new PlayerStatsData());
     }
 
     @JsonIgnore

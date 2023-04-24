@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import net.kodehawa.migrator.helpers.special.helpers.KeyType;
 import net.kodehawa.migrator.rethinkdb.helpers.PremiumKeyData;
 
 import java.beans.ConstructorProperties;
@@ -30,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 import static java.lang.System.currentTimeMillis;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PremiumKey implements ManagedObject {
+public class RethinkPremiumKey implements ManagedObject {
     public static final String DB_TABLE = "keys";
     private long duration;
     private boolean enabled;
@@ -43,9 +44,9 @@ public class PremiumKey implements ManagedObject {
 
     @JsonCreator
     @ConstructorProperties({"id", "duration", "expiration", "type", "enabled", "owner"})
-    public PremiumKey(@JsonProperty("id") String id, @JsonProperty("duration") long duration,
-                      @JsonProperty("expiration") long expiration, @JsonProperty("type") Type type,
-                      @JsonProperty("enabled") boolean enabled, @JsonProperty("owner") String owner, @JsonProperty("data") PremiumKeyData data) {
+    public RethinkPremiumKey(@JsonProperty("id") String id, @JsonProperty("duration") long duration,
+                             @JsonProperty("expiration") long expiration, @JsonProperty("type") KeyType type,
+                             @JsonProperty("enabled") boolean enabled, @JsonProperty("owner") String owner, @JsonProperty("data") PremiumKeyData data) {
         this.id = id;
         this.duration = duration;
         this.expiration = expiration;
@@ -57,13 +58,13 @@ public class PremiumKey implements ManagedObject {
     }
 
     @JsonIgnore
-    public PremiumKey() {
+    public RethinkPremiumKey() {
     }
 
     @JsonIgnore
-    public static PremiumKey generatePremiumKey(String owner, Type type, boolean linked) {
+    public static RethinkPremiumKey generatePremiumKey(String owner, KeyType type, boolean linked) {
         String premiumId = UUID.randomUUID().toString();
-        PremiumKey newKey = new PremiumKey(premiumId, -1, -1, type, false, owner, new PremiumKeyData());
+        RethinkPremiumKey newKey = new RethinkPremiumKey(premiumId, -1, -1, type, false, owner, new PremiumKeyData());
         if (linked)
             newKey.data.setLinkedTo(owner); //used for patreon checks in newly-activated keys (if applicable)
 
@@ -72,9 +73,9 @@ public class PremiumKey implements ManagedObject {
     }
 
     @JsonIgnore
-    public static PremiumKey generatePremiumKeyTimed(String owner, Type type, int days, boolean linked) {
+    public static RethinkPremiumKey generatePremiumKeyTimed(String owner, KeyType type, int days, boolean linked) {
         String premiumId = UUID.randomUUID().toString();
-        PremiumKey newKey = new PremiumKey(premiumId, TimeUnit.DAYS.toMillis(days), currentTimeMillis() + TimeUnit.DAYS.toMillis(days), type, false, owner, new PremiumKeyData());
+        RethinkPremiumKey newKey = new RethinkPremiumKey(premiumId, TimeUnit.DAYS.toMillis(days), currentTimeMillis() + TimeUnit.DAYS.toMillis(days), type, false, owner, new PremiumKeyData());
         if (linked)
             newKey.data.setLinkedTo(owner); //used for patreon checks in newly-activated keys (if applicable)
 
@@ -83,8 +84,8 @@ public class PremiumKey implements ManagedObject {
     }
 
     @JsonIgnore
-    public Type getParsedType() {
-        return Type.values()[type];
+    public KeyType getParsedType() {
+        return KeyType.values()[type];
     }
 
     @JsonIgnore
@@ -144,9 +145,5 @@ public class PremiumKey implements ManagedObject {
 
     public PremiumKeyData getData() {
         return this.data;
-    }
-
-    public enum Type {
-        MASTER, USER, GUILD
     }
 }

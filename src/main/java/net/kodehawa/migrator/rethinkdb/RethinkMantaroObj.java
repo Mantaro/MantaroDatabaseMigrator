@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MantaroObj implements ManagedObject {
+public class RethinkMantaroObj implements ManagedObject {
     public static final String DB_TABLE = "mantaro";
     public static final String id = "mantaro";
     public List<String> blackListedGuilds;
@@ -41,20 +41,20 @@ public class MantaroObj implements ManagedObject {
 
     @ConstructorProperties({"blackListedGuilds", "blackListedUsers", "patreonUsers", "mutes"})
     @JsonCreator
-    public MantaroObj(@JsonProperty("blackListedGuilds") List<String> blackListedGuilds,
-                      @JsonProperty("blackListedUsers") List<String> blackListedUsers,
-                      @JsonProperty("patreonUsers") List<String> patreonUsers,
-                      @JsonProperty("mutes") Map<Long, Pair<String, Long>> mutes) {
+    public RethinkMantaroObj(@JsonProperty("blackListedGuilds") List<String> blackListedGuilds,
+                             @JsonProperty("blackListedUsers") List<String> blackListedUsers,
+                             @JsonProperty("patreonUsers") List<String> patreonUsers,
+                             @JsonProperty("mutes") Map<Long, Pair<String, Long>> mutes) {
         this.blackListedGuilds = blackListedGuilds;
         this.blackListedUsers = blackListedUsers;
         this.patreonUsers = patreonUsers;
         this.mutes = mutes;
     }
 
-    public MantaroObj() { }
+    public RethinkMantaroObj() { }
 
-    public static MantaroObj create() {
-        return new MantaroObj(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ConcurrentHashMap<>());
+    public static RethinkMantaroObj create() {
+        return new RethinkMantaroObj(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ConcurrentHashMap<>());
     }
 
     

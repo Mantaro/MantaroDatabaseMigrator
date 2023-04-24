@@ -71,7 +71,6 @@ public enum HousePetType {
     private final boolean buyable;
 
     HousePetType(String name, List<HousePetAbility> ability, int cost, int maxCoinBuildup, int gemLuckIncrease, boolean buyable) {
-        this.emoji = emoji;
         this.name = name;
         this.abilities = ability;
         this.cost = cost;
