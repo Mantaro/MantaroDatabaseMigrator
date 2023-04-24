@@ -146,11 +146,13 @@ public class Migrator {
             logger.info("Migrating Player {} out of {} (id: {})", ++i, players.size(), id);
             var mongoPlayer = Player.of(player.getUserId());
             var rethinkData = player.getData();
-            mongoPlayer.level(player.getLevel());
+            if (player.getLevel() > 1) { // Avoid level 1 players getting "not new" treatment.
+                mongoPlayer.level(player.getLevel());
+            }
             mongoPlayer.setOldMoney(player.getOldMoney());
             mongoPlayer.setNewMoney(rethinkData.getNewMoney());
             mongoPlayer.reputation(player.getReputation());
-            if (rethinkData.getExperience() > 2000) { // Avoid a bunch of 1~150 experience and nothing else changed objects.
+            if (rethinkData.getExperience() > 500) { // Avoid a bunch of 1~150 experience and nothing else changed objects.
                 mongoPlayer.setExperience(rethinkData.getExperience());
             }
 
@@ -159,9 +161,6 @@ public class Migrator {
             mongoPlayer.gamesWon(rethinkData.getGamesWon());
             mongoPlayer.lastDailyAt(rethinkData.getLastDailyAt());
             mongoPlayer.setLockedUntil(rethinkData.getLockedUntil());
-            mongoPlayer.setMarriedSince(rethinkData.getMarriedSince());
-            mongoPlayer.setMarriedWith(rethinkData.getMarriedWith());
-            mongoPlayer.setMoneyOnBank(rethinkData.getMoneyOnBank());
             mongoPlayer.mainBadge(rethinkData.getMainBadge());
             mongoPlayer.marketUsed(rethinkData.getMarketUsed());
             mongoPlayer.showBadge(rethinkData.isShowBadge());
