@@ -25,6 +25,8 @@ import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.Conventions;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -39,15 +41,16 @@ import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class Migrator {
+    public static Logger logger = LoggerFactory.getLogger(Migrator.class);
     public static void main(String[] args) {
-        System.out.println("Starting migration...\n");
+        logger.info("Starting migration...\n");
 
-        System.out.println("Started User migration...");
+        logger.info("Started User migration...");
         var users = getRethinkDBUsers();
         var i = 0;
         for (var user : users) {
             var id = user.getId();
-            System.out.println("Migrating user " + ++i + " out of " + users.size() + " (id: " + id + ")");
+            logger.info("Migrating user {} out of {} (id: {}", ++i, users.size(), id);
             var mongoUser = UserDatabase.of(id);
             var rtdbData = user.getData();
 
@@ -74,27 +77,27 @@ public class Migrator {
             mongoUser.save();
         }
 
-        System.out.println("!!! Finished User migration.\n");
+        logger.info("!!! Finished User migration.\n");
 
-        System.out.println("Started Key migration...");
+        logger.info("Started Key migration...");
         var keys = getRethinkDBPremiumKeys();
         i = 0;
         for (var key : keys) {
             var id = key.getId();
-            System.out.println("Migrating key " + ++i + " out of " + keys.size() + " (id: " + id + ")");
+            logger.info("Migrating key {} out of {} (id: {})", ++i, keys.size(), id);
             var mongoKey = new PremiumKey(id, key.getDuration(), key.getExpiration(), key.getParsedType(), key.isEnabled(), key.getOwner(), key.getData().getLinkedTo());
 
             mongoKey.save();
         }
 
-        System.out.println("!!! Finished Key migration.\n");
+        logger.info("!!! Finished Key migration.\n");
 
-        System.out.println("Started Custom Commands migration...");
+        logger.info("Started Custom Commands migration...");
         var customs = getRethinkCC();
         i = 0;
         for (var custom : customs) {
             var id = custom.getId();
-            System.out.println("Migrating CC " + ++i + " out of " + customs.size() + " (id: " + id + ")");
+            logger.info("Migrating Custom Command {} out of {} (id: {})", ++i, customs.size(), id);
             var mongoCustom = CustomCommand.of(custom.getGuildId(), custom.getName(), custom.getValues());
             mongoCustom.setLocked(custom.getData().isLocked());
             mongoCustom.setNsfw(custom.getData().isNsfw());
@@ -103,14 +106,14 @@ public class Migrator {
             mongoCustom.save();
         }
 
-        System.out.println("!!! Finished Custom Commands migration.\n");
+        logger.info("!!! Finished Custom Commands migration.\n");
 
-        System.out.println("Started Marriage migration...");
+        logger.info("Started Marriage migration...");
         var marriages = getRethinkDBMarriages();
         i = 0;
         for (var marriage : marriages) {
             var id = marriage.getId();
-            System.out.println("Migrating Marriage " + ++i + " out of " + marriages.size() + " (id: " + id + ")");
+            logger.info("Migrating Marriage {} out of {} (id: {})", ++i, marriages.size(), id);
             var mongoMarriage = Marriage.of(id, marriage.getPlayer1(), marriage.getPlayer2());
             mongoMarriage.carName(marriage.getData().getCarName());
             mongoMarriage.houseName(marriage.getData().getHouseName());
@@ -122,7 +125,11 @@ public class Migrator {
             mongoMarriage.save();
         }
 
-        System.out.println("!!! Finished Marriage migration.\n");
+        logger.info("!!! Finished Marriage migration.\n");
+
+        // Reminder: inventory format changed from id:amount to name:amount!
+        logger.info("Started Player migration...");
+        logger.info("!!! Finished Player migration.\n");
     }
 
     private static Connection rethinkConnection;
@@ -153,10 +160,9 @@ public class Migrator {
                             .build();
 
                     mongoClient = MongoClients.create(clientSettings);
-                    System.out.println("Established first MongoDB connection.");
+                    logger.info("Established first MongoDB connection.");
                 } catch (Exception e) {
-                    System.err.println("Cannot connect to database! Bailing out");
-                    e.printStackTrace();
+                    logger.error("Cannot connect to database! Bailing out!", e);
                     System.exit(1);
                 }
             }
@@ -179,7 +185,7 @@ public class Migrator {
                         .user(getValue("migrator.rethink_user"), getValue("migrator.rethink_pw"))
                         .connect();
 
-                System.out.println("Established first RethinkDB connection.");
+                logger.error("Established first RethinkDB connection.");
             }
         }
 
@@ -187,11 +193,11 @@ public class Migrator {
     }
 
     public static List<RethinkPlayer> getRethinkDBPlayers() {
-        System.out.println("Getting all players...");
+        logger.error("Getting all players...");
         String pattern = ":g$";
         Result<RethinkPlayer> c = r.table(RethinkPlayer.DB_TABLE).filter(quote -> quote.g("id").match(pattern)).run(rethinkConnection(), RethinkPlayer.class);
         var list = c.toList();
-        System.out.println("Got all players, list size is: " + list.size());
+        logger.error("Got all players, list size is: {}", list.size());
         return list;
     }
 
@@ -199,7 +205,7 @@ public class Migrator {
         System.out.println("Getting all marriages...");
         Result<RethinkMarriage> c = r.table(RethinkMarriage.DB_TABLE).run(rethinkConnection(), RethinkMarriage.class);
         var list = c.toList();
-        System.out.println("Got all marriages, list size is: " + list.size());
+        logger.error("Got all marriages, list size is: {}", list.size());
         return list;
     }
 
@@ -207,7 +213,7 @@ public class Migrator {
         System.out.println("Getting all keys...");
         Result<RethinkPremiumKey> c = r.table(RethinkPremiumKey.DB_TABLE).run(rethinkConnection(), RethinkPremiumKey.class);
         var list = c.toList();
-        System.out.println("Got all keys, list size is: " + list.size());
+        logger.error("Got all keys, list size is: {}", list.size());
         return list;
     }
 
@@ -215,7 +221,7 @@ public class Migrator {
         System.out.println("Getting all users...");
         Result<RethinkUser> c = r.table(RethinkUser.DB_TABLE).run(rethinkConnection(), RethinkUser.class);
         var list = c.toList();
-        System.out.println("Got all users, list size is: " + list.size());
+        logger.error("Got all users, list size is: {}", list.size());
         return list;
     }
 
@@ -223,7 +229,7 @@ public class Migrator {
         System.out.println("Getting all custom commands...");
         Result<RethinkCustomCommand> c = r.table(RethinkCustomCommand.DB_TABLE).run(rethinkConnection(), RethinkCustomCommand.class);
         var list = c.toList();
-        System.out.println("Got all custom commands, list size is: " + list.size());
+        logger.error("Got all custom commands, list size is: {}", list.size());
         return list;
     }
 
@@ -257,14 +263,14 @@ public class Migrator {
         try {
             var collection = mongoConnection().getDatabase("mantaro").getCollection(object.getTableName(), clazz);
             if (collection.find().filter(Filters.eq(object.getId())).first() != null) {
-                System.out.println("Skipping save: object already exists?");
+                logger.warn("Skipping save: object already exists?");
                 return;
             }
 
-            System.out.println("Saved to Mongo: " + object);
+            logger.info("Saved to Mongo: " + object);
             collection.insertOne(object);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error saving object!", e);
         }
     }
 
