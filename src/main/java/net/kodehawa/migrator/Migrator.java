@@ -149,9 +149,11 @@ public class Migrator {
             if (player.getLevel() > 1) { // Avoid level 1 players getting "not new" treatment.
                 mongoPlayer.level(player.getLevel());
             }
+
             mongoPlayer.setOldMoney(player.getOldMoney());
             mongoPlayer.setNewMoney(rethinkData.getNewMoney());
             mongoPlayer.reputation(player.getReputation());
+
             if (rethinkData.getExperience() > 500) { // Avoid a bunch of 1~150 experience and nothing else changed objects.
                 mongoPlayer.setExperience(rethinkData.getExperience());
             }
@@ -189,7 +191,7 @@ public class Migrator {
             // This takes care of the inventory format change, as merge is done as a list of ItemStack, which get serialized on save.
             mongoPlayer.mergeInventory(player.getInventory().asList());
 
-            if (mongoPlayer.equals(Player.of(id))) {
+            if (mongoPlayer.equals(Player.of(player.getUserId()))) {
                 logger.warn("Unchanged object id {}, skipping...", id);
                 continue;
             }
