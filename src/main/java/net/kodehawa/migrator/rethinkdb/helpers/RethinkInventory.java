@@ -30,10 +30,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static net.kodehawa.migrator.rethinkdb.helpers.Inventory.Resolver.serialize;
-import static net.kodehawa.migrator.rethinkdb.helpers.Inventory.Resolver.unserialize;
+import static net.kodehawa.migrator.rethinkdb.helpers.RethinkInventory.Resolver.serialize;
+import static net.kodehawa.migrator.rethinkdb.helpers.RethinkInventory.Resolver.unserialize;
 
-public class Inventory {
+public class RethinkInventory {
     private static final Logger LOGGER = LoggerFactory.getLogger("Inventory");
     private Map<Integer, Integer> inventory = new HashMap<>();
 

@@ -42,7 +42,7 @@ public class Player implements ManagedMongoObject {
     @BsonIgnore
     public static final String DB_TABLE = "players";
     @BsonIgnore
-    private final Inventory inventoryObject = new Inventory();
+    private final MongoInventory inventoryObject = new MongoInventory();
     @BsonIgnore
     public Map<String, Object> fieldTracker = new HashMap<>();
 
@@ -96,7 +96,7 @@ public class Player implements ManagedMongoObject {
         this.level = level == null ? 0 : level;
         this.oldMoney = oldMoney == null ? 0 : oldMoney;
         this.reputation = reputation == null ? 0 : reputation;
-        this.inventoryObject.replaceWith(Inventory.unserialize(inventory));
+        this.inventoryObject.replaceWith(MongoInventory.unserialize(inventory));
     }
 
     /**
@@ -223,11 +223,11 @@ public class Player implements ManagedMongoObject {
     }
 
     public Map<String, Integer> getInventory() {
-        return Inventory.serialize(inventoryObject.asList());
+        return MongoInventory.serialize(inventoryObject.asList());
     }
 
-    // -- Setters (protected if possible)
-    protected void setClaimLocked(boolean claimLocked) {
+    // -- Setters (public if possible)
+    public void setClaimLocked(boolean claimLocked) {
         this.claimLocked = claimLocked;
     }
 
@@ -251,87 +251,87 @@ public class Player implements ManagedMongoObject {
         this.fishingExperience = fishingExperience;
     }
 
-    protected void setDailyStreak(long dailyStreak) {
+    public void setDailyStreak(long dailyStreak) {
         this.dailyStreak = dailyStreak;
     }
 
-    protected void setDescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    protected void setGamesWon(long gamesWon) {
+    public void setGamesWon(long gamesWon) {
         this.gamesWon = gamesWon;
     }
 
-    protected void setLastDailyAt(long lastDailyAt) {
+    public void setLastDailyAt(long lastDailyAt) {
         this.lastDailyAt = lastDailyAt;
     }
 
-    protected void setLockedUntil(long lockedUntil) {
+    public void setLockedUntil(long lockedUntil) {
         this.lockedUntil = lockedUntil;
     }
 
-    protected void setMarriedSince(Long marriedSince) {
+    public void setMarriedSince(Long marriedSince) {
         this.marriedSince = marriedSince;
     }
 
-    protected void setMarriedWith(String marriedWith) {
+    public void setMarriedWith(String marriedWith) {
         this.marriedWith = marriedWith;
     }
 
-    protected void setMoneyOnBank(long moneyOnBank) {
+    public void setMoneyOnBank(long moneyOnBank) {
         this.moneyOnBank = moneyOnBank;
     }
 
-    protected void setMainBadge(Badge mainBadge) {
+    public void setMainBadge(Badge mainBadge) {
         this.mainBadge = mainBadge;
     }
 
-    protected void setShowBadge(boolean showBadge) {
+    public void setShowBadge(boolean showBadge) {
         this.showBadge = showBadge;
     }
 
-    protected void setMarketUsed(long marketUsed) {
+    public void setMarketUsed(long marketUsed) {
         this.marketUsed = marketUsed;
     }
 
-    protected void setActivePotion(PotionEffect activePotion) {
+    public void setActivePotion(PotionEffect activePotion) {
         this.activePotion = activePotion;
     }
 
-    protected void setActiveBuff(PotionEffect activeBuff) {
+    public void setActiveBuff(PotionEffect activeBuff) {
         this.activeBuff = activeBuff;
     }
 
-    protected void setWaifuCachedValue(long waifuCachedValue) {
+    public void setWaifuCachedValue(long waifuCachedValue) {
         this.waifuCachedValue = waifuCachedValue;
     }
 
-    protected void setProfileComponents(List<ProfileComponent> profileComponents) {
+    public void setProfileComponents(List<ProfileComponent> profileComponents) {
         this.profileComponents = profileComponents;
     }
 
-    protected void setPetSlots(long petSlots) {
+    public void setPetSlots(long petSlots) {
         this.petSlots = petSlots;
     }
 
-    protected void setTimesMopped(long timesMopped) {
+    public void setTimesMopped(long timesMopped) {
         this.timesMopped = timesMopped;
     }
 
-    protected void setCratesOpened(long cratesOpened) {
+    public void setCratesOpened(long cratesOpened) {
         this.cratesOpened = cratesOpened;
     }
 
-    protected void setSharksCaught(long sharksCaught) {
+    public void setSharksCaught(long sharksCaught) {
         this.sharksCaught = sharksCaught;
     }
 
-    protected void setWaifuout(boolean waifuout) {
+    public void setWaifuout(boolean waifuout) {
         this.waifuout = waifuout;
     }
 
-    protected void setLastCrateGiven(int lastCrateGiven) {
+    public void setLastCrateGiven(int lastCrateGiven) {
         this.lastCrateGiven = lastCrateGiven;
     }
 
@@ -339,15 +339,15 @@ public class Player implements ManagedMongoObject {
         this.newMoney = newMoney;
     }
 
-    protected void setInventorySortType(InventorySortType inventorySortType) {
+    public void setInventorySortType(InventorySortType inventorySortType) {
         this.inventorySortType = inventorySortType;
     }
 
-    protected void setHiddenLegacy(boolean hiddenLegacy) {
+    public void setHiddenLegacy(boolean hiddenLegacy) {
         this.hiddenLegacy = hiddenLegacy;
     }
 
-    protected void setNewPlayerNotice(boolean newPlayerNotice) {
+    public void setNewPlayerNotice(boolean newPlayerNotice) {
         this.newPlayerNotice = newPlayerNotice;
     }
 
@@ -355,29 +355,29 @@ public class Player implements ManagedMongoObject {
         this.oldMoney = newAmount;
     }
 
-    protected void setReputation(Long reputation) {
+    public void setReputation(Long reputation) {
         this.reputation = reputation;
     }
 
-    protected void setLevel(long level) {
+    public void setLevel(long level) {
         this.level = level;
     }
 
-    protected void setChopExperience(long chopExperience) {
+    public void setChopExperience(long chopExperience) {
         this.chopExperience = chopExperience;
     }
 
-    protected void setLastSeenCampaign(long lastSeenCampaign) {
+    public void setLastSeenCampaign(long lastSeenCampaign) {
         this.lastSeenCampaign = lastSeenCampaign;
     }
 
-    protected void setPetChoice(PetChoice petChoice) {
+    public void setPetChoice(PetChoice petChoice) {
         this.petChoice = petChoice;
     }
 
     public void setInventory(Map<String, Integer> inventory) {
         this.inventory = inventory;
-        this.inventoryObject.replaceWith(Inventory.unserialize(inventory));
+        this.inventoryObject.replaceWith(MongoInventory.unserialize(inventory));
     }
 
     // -- Tracking setters (always public)
@@ -534,7 +534,7 @@ public class Player implements ManagedMongoObject {
 
     @BsonProperty("inventory")
     public Map<String, Integer> rawInventory() {
-        return Inventory.serialize(inventoryObject.asList());
+        return MongoInventory.serialize(inventoryObject.asList());
     }
 
     public long getNewMoney() {

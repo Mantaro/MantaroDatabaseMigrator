@@ -30,11 +30,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Inventory {
+public class MongoInventory {
     private static final Logger LOGGER = LoggerFactory.getLogger("Inventory");
     private Map<String, Integer> stored = new HashMap<>();
 
-    public Inventory() {}
+    public MongoInventory() {}
 
     public List<ItemStack> asList() {
         return unserialize(stored);

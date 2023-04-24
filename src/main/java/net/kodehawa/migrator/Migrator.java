@@ -13,6 +13,7 @@ import net.kodehawa.migrator.mongodb.CustomCommand;
 import net.kodehawa.migrator.mongodb.GuildDatabase;
 import net.kodehawa.migrator.mongodb.ManagedMongoObject;
 import net.kodehawa.migrator.mongodb.Marriage;
+import net.kodehawa.migrator.mongodb.Player;
 import net.kodehawa.migrator.mongodb.PremiumKey;
 import net.kodehawa.migrator.mongodb.UserDatabase;
 import net.kodehawa.migrator.mongodb.codecs.MapCodecProvider;
@@ -77,7 +78,7 @@ public class Migrator {
             mongoUser.setRemindedTimes(rtdbData.getRemindedTimes());
 
             if (mongoUser.equals(UserDatabase.of(id))) {
-                logger.warn("Unchanged object, skipping...");
+                logger.warn("Unchanged object id {}, skipping...", id);
                 return;
             }
 
@@ -136,6 +137,61 @@ public class Migrator {
 
         // Reminder: inventory format changed from id:amount to name:amount!
         logger.info("Started Player migration...");
+        var players = getRethinkDBPlayers();
+        i = 0;
+        for (var player : players) {
+            var id = player.getId();
+            logger.info("Migrating Player {} out of {} (id: {})", ++i, players.size(), id);
+            var mongoPlayer = Player.of(player.getUserId());
+            var rethinkData = player.getData();
+            mongoPlayer.level(player.getLevel());
+            mongoPlayer.setOldMoney(player.getOldMoney());
+            mongoPlayer.setNewMoney(rethinkData.getNewMoney());
+            mongoPlayer.reputation(player.getReputation());
+            mongoPlayer.setExperience(rethinkData.getExperience());
+            mongoPlayer.dailyStreak(rethinkData.getDailyStreak());
+            mongoPlayer.description(rethinkData.getDescription());
+            mongoPlayer.gamesWon(rethinkData.getGamesWon());
+            mongoPlayer.lastDailyAt(rethinkData.getLastDailyAt());
+            mongoPlayer.setLockedUntil(rethinkData.getLockedUntil());
+            mongoPlayer.setMarriedSince(rethinkData.getMarriedSince());
+            mongoPlayer.setMarriedWith(rethinkData.getMarriedWith());
+            mongoPlayer.setMoneyOnBank(rethinkData.getMoneyOnBank());
+            mongoPlayer.mainBadge(rethinkData.getMainBadge());
+            mongoPlayer.marketUsed(rethinkData.getMarketUsed());
+            mongoPlayer.showBadge(rethinkData.isShowBadge());
+            mongoPlayer.setActivePotion(rethinkData.getActivePotion());
+            mongoPlayer.setActiveBuff(rethinkData.getActiveBuff());
+            mongoPlayer.waifuCachedValue(rethinkData.getWaifuCachedValue());
+            mongoPlayer.claimLocked(rethinkData.isClaimLocked());
+            mongoPlayer.setMiningExperience(rethinkData.getMiningExperience());
+            mongoPlayer.setFishingExperience(rethinkData.getFishingExperience());
+            mongoPlayer.setChopExperience(rethinkData.getChopExperience());
+            mongoPlayer.timesMopped(rethinkData.getTimesMopped());
+            mongoPlayer.cratesOpened(rethinkData.getCratesOpened());
+            mongoPlayer.sharksCaught(rethinkData.getSharksCaught());
+            mongoPlayer.waifuout(rethinkData.isWaifuout());
+            mongoPlayer.lastCrateGiven(rethinkData.getLastCrateGiven());
+            mongoPlayer.setLastSeenCampaign(rethinkData.getLastSeenCampaign());
+            mongoPlayer.setResetWarning(rethinkData.isResetWarning());
+            mongoPlayer.inventorySortType(rethinkData.getInventorySortType());
+            mongoPlayer.hiddenLegacy(rethinkData.isHiddenLegacy());
+            mongoPlayer.newPlayerNotice(rethinkData.isNewPlayerNotice());
+            mongoPlayer.setPetSlots(rethinkData.getPetSlots());
+            mongoPlayer.setPetChoice(rethinkData.getPetChoice());
+            mongoPlayer.setPet(rethinkData.getPet());
+            mongoPlayer.setBadges(rethinkData.getBadges());
+            mongoPlayer.setProfileComponents(rethinkData.getProfileComponents());
+            mongoPlayer.mergeInventory(player.getInventory().asList());
+
+            if (mongoPlayer.equals(Player.of(id))) {
+                logger.warn("Unchanged object id {}, skipping...", id);
+                return;
+            }
+
+            mongoPlayer.save();
+        }
+
         logger.info("!!! Finished Player migration.\n");
 
         logger.info("Started Guild migration...");
@@ -216,7 +272,7 @@ public class Migrator {
             mongoGuild.setHasReceivedGreet(rethinkData.isHasReceivedGreet());
 
             if (mongoGuild.equals(GuildDatabase.of(id))) {
-                logger.warn("Unchanged object, skipping...");
+                logger.warn("Unchanged object id {}, skipping...", id);
                 return;
             }
 

@@ -21,15 +21,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import net.kodehawa.migrator.rethinkdb.helpers.Inventory;
+import net.kodehawa.migrator.rethinkdb.helpers.RethinkInventory;
 import net.kodehawa.migrator.rethinkdb.helpers.PlayerData;
 
 import java.beans.ConstructorProperties;
 import java.util.HashMap;
 import java.util.Map;
 
-import static net.kodehawa.migrator.rethinkdb.helpers.Inventory.Resolver.serialize;
-import static net.kodehawa.migrator.rethinkdb.helpers.Inventory.Resolver.unserialize;
+import static net.kodehawa.migrator.rethinkdb.helpers.RethinkInventory.Resolver.serialize;
+import static net.kodehawa.migrator.rethinkdb.helpers.RethinkInventory.Resolver.unserialize;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RethinkPlayer implements ManagedObject {
@@ -40,7 +40,7 @@ public class RethinkPlayer implements ManagedObject {
     private final String id;
 
     @JsonIgnore
-    private final transient Inventory inventory = new Inventory();
+    private final transient RethinkInventory inventory = new RethinkInventory();
 
     @JsonProperty("level")
     private Long level;
@@ -88,7 +88,7 @@ public class RethinkPlayer implements ManagedObject {
     }
 
     @JsonIgnore
-    public Inventory getInventory() {
+    public RethinkInventory getInventory() {
         return inventory;
     }
 
