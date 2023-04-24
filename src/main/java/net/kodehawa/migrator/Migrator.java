@@ -10,6 +10,7 @@ import com.mongodb.connection.ConnectionPoolSettings;
 import com.rethinkdb.net.Connection;
 import com.rethinkdb.net.Result;
 import net.kodehawa.migrator.mongodb.CustomCommand;
+import net.kodehawa.migrator.mongodb.GuildDatabase;
 import net.kodehawa.migrator.mongodb.ManagedMongoObject;
 import net.kodehawa.migrator.mongodb.Marriage;
 import net.kodehawa.migrator.mongodb.PremiumKey;
@@ -17,6 +18,7 @@ import net.kodehawa.migrator.mongodb.UserDatabase;
 import net.kodehawa.migrator.mongodb.codecs.MapCodecProvider;
 import net.kodehawa.migrator.rethinkdb.ManagedObject;
 import net.kodehawa.migrator.rethinkdb.RethinkCustomCommand;
+import net.kodehawa.migrator.rethinkdb.RethinkGuild;
 import net.kodehawa.migrator.rethinkdb.RethinkMarriage;
 import net.kodehawa.migrator.rethinkdb.RethinkPlayer;
 import net.kodehawa.migrator.rethinkdb.RethinkPremiumKey;
@@ -74,6 +76,11 @@ public class Migrator {
             mongoUser.setEquippedItems(rtdbData.getEquippedItems());
             mongoUser.setRemindedTimes(rtdbData.getRemindedTimes());
 
+            if (mongoUser.equals(UserDatabase.of(id))) {
+                logger.warn("Unchanged object, skipping...");
+                return;
+            }
+
             mongoUser.save();
         }
 
@@ -130,6 +137,93 @@ public class Migrator {
         // Reminder: inventory format changed from id:amount to name:amount!
         logger.info("Started Player migration...");
         logger.info("!!! Finished Player migration.\n");
+
+        logger.info("Started Guild migration...");
+        var guilds = getRethinkGuilds();
+        i = 0;
+        for (var guild : guilds) {
+            var id = guild.getId();
+            logger.info("Migrating Guild {} out of {} (id: {})", ++i, guilds.size(), id);
+            var mongoGuild = GuildDatabase.of(id);
+            var rethinkData = guild.getData();
+            // This was painstakingly double checked using the incredible technology of a single notepad with the fields on it and making sure the amount matched up.
+            // Yep, I'm suffering.
+            mongoGuild.setPremiumUntil(guild.getPremiumUntil());
+            mongoGuild.setAutoroles(rethinkData.getAutoroles());
+            mongoGuild.setBirthdayChannel(rethinkData.getBirthdayChannel());
+            mongoGuild.setBirthdayRole(rethinkData.getBirthdayRole());
+            mongoGuild.setCases(rethinkData.getCases());
+            mongoGuild.setChannelSpecificDisabledCategories(rethinkData.getChannelSpecificDisabledCategories());
+            mongoGuild.setChannelSpecificDisabledCommands(rethinkData.getChannelSpecificDisabledCommands());
+            mongoGuild.setDisabledCategories(rethinkData.getDisabledCategories());
+            mongoGuild.setDisabledChannels(rethinkData.getDisabledChannels());
+            mongoGuild.setDisabledCommands(rethinkData.getDisabledCommands());
+            mongoGuild.setDisabledRoles(rethinkData.getDisabledRoles());
+            mongoGuild.setDisabledUsers(rethinkData.getDisabledUsers());
+            mongoGuild.setGuildAutoRole(rethinkData.getGuildAutoRole());
+            mongoGuild.setGuildCustomPrefix(rethinkData.getGuildCustomPrefix());
+            mongoGuild.setGuildLogChannel(rethinkData.getGuildLogChannel());
+            mongoGuild.setJoinMessage(rethinkData.getJoinMessage());
+            mongoGuild.setLeaveMessage(rethinkData.getLeaveMessage());
+            mongoGuild.setLogExcludedChannels(rethinkData.getLogExcludedChannels());
+            mongoGuild.setLogJoinLeaveChannel(rethinkData.getLogJoinLeaveChannel());
+            mongoGuild.setMaxFairQueue(rethinkData.getMaxFairQueue());
+            mongoGuild.setModlogBlacklistedPeople(rethinkData.getModlogBlacklistedPeople());
+            mongoGuild.setMusicAnnounce(rethinkData.isMusicAnnounce());
+            mongoGuild.setMusicChannel(rethinkData.getMusicChannel());
+            mongoGuild.setMutedRole(rethinkData.getMutedRole());
+            mongoGuild.setNoMentionsAction(rethinkData.isNoMentionsAction());
+            mongoGuild.setPremiumKey(rethinkData.getPremiumKey());
+            mongoGuild.setRanPolls(rethinkData.getRanPolls());
+            mongoGuild.setRolesBlockedFromCommands(rethinkData.getRolesBlockedFromCommands());
+            mongoGuild.setSetModTimeout(rethinkData.getSetModTimeout());
+            mongoGuild.setTimeDisplay(rethinkData.getTimeDisplay());
+            mongoGuild.setGameTimeoutExpectedAt(rethinkData.getGameTimeoutExpectedAt());
+            mongoGuild.setIgnoreBotsAutoRole(rethinkData.isIgnoreBotsAutoRole());
+            mongoGuild.setIgnoreBotsWelcomeMessage(rethinkData.isIgnoreBotsWelcomeMessage());
+            mongoGuild.setEnabledLevelUpMessages(rethinkData.isEnabledLevelUpMessages());
+            mongoGuild.setLevelUpMessage(rethinkData.getLevelUpMessage());
+            mongoGuild.setBlackListedImageTags(rethinkData.getBlackListedImageTags());
+            mongoGuild.setLogJoinChannel(rethinkData.getLogJoinChannel());
+            mongoGuild.setLogLeaveChannel(rethinkData.getLogLeaveChannel());
+            mongoGuild.setLinkProtectionAllowedUsers(rethinkData.getLinkProtectionAllowedUsers());
+            mongoGuild.setRoleSpecificDisabledCategories(rethinkData.getRoleSpecificDisabledCategories());
+            mongoGuild.setRoleSpecificDisabledCommands(rethinkData.getRoleSpecificDisabledCommands());
+            mongoGuild.setLang(rethinkData.getLang());
+            mongoGuild.setMusicVote(rethinkData.isMusicVote());
+            mongoGuild.setExtraJoinMessages(rethinkData.getExtraJoinMessages());
+            mongoGuild.setExtraLeaveMessages(rethinkData.getExtraLeaveMessages());
+            mongoGuild.setBirthdayMessage(rethinkData.getBirthdayMessage());
+            mongoGuild.setCustomAdminLockNew(rethinkData.isCustomAdminLockNew());
+            mongoGuild.setMpLinkedTo(rethinkData.getMpLinkedTo());
+            mongoGuild.setModlogBlacklistedPeople(rethinkData.getModlogBlacklistedPeople());
+            mongoGuild.setAutoroleCategories(rethinkData.getAutoroleCategories());
+            mongoGuild.setEditMessageLog(rethinkData.getEditMessageLog());
+            mongoGuild.setDeleteMessageLog(rethinkData.getDeleteMessageLog());
+            mongoGuild.setBannedMemberLog(rethinkData.getBannedMemberLog());
+            mongoGuild.setUnbannedMemberLog(rethinkData.getUnbannedMemberLog());
+            mongoGuild.setKickedMemberLog(rethinkData.getKickedMemberLog());
+            mongoGuild.setCommandWarningDisplay(rethinkData.isCommandWarningDisplay());
+            mongoGuild.setBirthdayBlockedIds(rethinkData.getBirthdayBlockedIds());
+            mongoGuild.setGameMultipleDisabled(rethinkData.isGameMultipleDisabled());
+            mongoGuild.setLogTimezone(rethinkData.getLogTimezone());
+            mongoGuild.setAllowedBirthdays(rethinkData.getAllowedBirthdays());
+            mongoGuild.setNotifiedFromBirthdayChange(rethinkData.isNotifiedFromBirthdayChange());
+            mongoGuild.setDisableExplicit(rethinkData.isDisableExplicit());
+            mongoGuild.setDjRoleId(rethinkData.getDjRoleId());
+            mongoGuild.setMusicQueueSizeLimit(rethinkData.getMusicQueueSizeLimit());
+            mongoGuild.setRunningPolls(rethinkData.getRunningPolls());
+            mongoGuild.setHasReceivedGreet(rethinkData.isHasReceivedGreet());
+
+            if (mongoGuild.equals(GuildDatabase.of(id))) {
+                logger.warn("Unchanged object, skipping...");
+                return;
+            }
+
+            mongoGuild.save();
+        }
+
+        logger.info("!!! Finished Guild migration.\n");
     }
 
     private static Connection rethinkConnection;
@@ -235,6 +329,14 @@ public class Migrator {
         Result<RethinkCustomCommand> c = r.table(RethinkCustomCommand.DB_TABLE).run(rethinkConnection(), RethinkCustomCommand.class);
         var list = c.toList();
         logger.info("Got all custom commands, list size is: {}", list.size());
+        return list;
+    }
+
+    public static List<RethinkGuild> getRethinkGuilds() {
+        logger.info("Getting all guilds...");
+        Result<RethinkGuild> c = r.table(RethinkGuild.DB_TABLE).run(rethinkConnection(), RethinkGuild.class);
+        var list = c.toList();
+        logger.info("Got all guilds, list size is: {}", list.size());
         return list;
     }
 
