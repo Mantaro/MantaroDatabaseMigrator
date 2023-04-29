@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Objects;
 
 // Reminder: all setters MUST be public!
-public class UserDatabase implements ManagedMongoObject {
+public class MongoUser implements ManagedMongoObject {
     @BsonIgnore
     public static final String DB_TABLE = "users";
     @BsonIgnore
@@ -67,15 +67,15 @@ public class UserDatabase implements ManagedMongoObject {
     private boolean actionsDisabled = false;
 
     // Mongo serialization
-    public UserDatabase() { }
+    public MongoUser() { }
 
-    public UserDatabase(String id, long premiumUntil) {
+    public MongoUser(String id, long premiumUntil) {
         this.id = id;
         this.premiumUntil = premiumUntil;
     }
 
-    public static UserDatabase of(String id) {
-        return new UserDatabase(id, 0);
+    public static MongoUser of(String id) {
+        return new MongoUser(id, 0);
     }
 
     // --- Getters
@@ -325,12 +325,12 @@ public class UserDatabase implements ManagedMongoObject {
 
     @Override
     public void save() {
-        Migrator.saveMongo(this, UserDatabase.class);
+        Migrator.saveMongo(this, MongoUser.class);
     }
 
     @Override
     public void delete() {
-        Migrator.deleteMongo(this, UserDatabase.class);
+        Migrator.deleteMongo(this, MongoUser.class);
     }
 
     public long getPremiumUntil() {
@@ -341,7 +341,7 @@ public class UserDatabase implements ManagedMongoObject {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserDatabase that = (UserDatabase) o;
+        MongoUser that = (MongoUser) o;
         return premiumUntil == that.premiumUntil && receivedFirstKey == that.receivedFirstKey && remindedTimes == that.remindedTimes && dustLevel == that.dustLevel && receivedExpirationWarning == that.receivedExpirationWarning && waifuSlots == that.waifuSlots && timesClaimed == that.timesClaimed && privateTag == that.privateTag && autoEquip == that.autoEquip && actionsDisabled == that.actionsDisabled && Objects.equals(id, that.id) && Objects.equals(birthday, that.birthday) && Objects.equals(premiumKey, that.premiumKey) && Objects.equals(timezone, that.timezone) && Objects.equals(lang, that.lang) && Objects.equals(equippedItems, that.equippedItems) && Objects.equals(keysClaimed, that.keysClaimed) && Objects.equals(marriageId, that.marriageId) && Objects.equals(waifus, that.waifus) && Objects.equals(reminders, that.reminders);
     }
 

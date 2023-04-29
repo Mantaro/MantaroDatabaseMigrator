@@ -16,19 +16,19 @@ import java.util.Objects;
 import java.util.Set;
 
 @SuppressWarnings("unused")
-public class GuildDatabase implements ManagedMongoObject {
+public class MongoGuild implements ManagedMongoObject {
     @BsonIgnore
     public static final String DB_TABLE = "guilds";
     @BsonId
     private String id;
     @BsonIgnore
-    public static GuildDatabase of(String guildId) {
-        return new GuildDatabase(guildId);
+    public static MongoGuild of(String guildId) {
+        return new MongoGuild(guildId);
     }
 
     // Constructors needed for the Mongo Codec to deserialize/serialize this.
-    public GuildDatabase() {}
-    public GuildDatabase(String id) {
+    public MongoGuild() {}
+    public MongoGuild(String id) {
         this.id = id;
     }
 
@@ -45,13 +45,13 @@ public class GuildDatabase implements ManagedMongoObject {
     @Override
     @BsonIgnore
     public void save() {
-        Migrator.saveMongo(this, GuildDatabase.class);
+        Migrator.saveMongo(this, MongoGuild.class);
     }
 
     @Override
     @BsonIgnore
     public void delete() {
-        Migrator.deleteMongo(this, GuildDatabase.class);
+        Migrator.deleteMongo(this, MongoGuild.class);
     }
 
     // ------------------------- DATA CLASS START ------------------------- //
@@ -645,7 +645,7 @@ public class GuildDatabase implements ManagedMongoObject {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GuildDatabase that = (GuildDatabase) o;
+        MongoGuild that = (MongoGuild) o;
         return premiumUntil == that.premiumUntil && cases == that.cases && maxFairQueue == that.maxFairQueue && musicAnnounce == that.musicAnnounce && noMentionsAction == that.noMentionsAction && ranPolls == that.ranPolls && setModTimeout == that.setModTimeout && timeDisplay == that.timeDisplay && ignoreBotsWelcomeMessage == that.ignoreBotsWelcomeMessage && ignoreBotsAutoRole == that.ignoreBotsAutoRole && musicVote == that.musicVote && customAdminLockNew == that.customAdminLockNew && commandWarningDisplay == that.commandWarningDisplay && gameMultipleDisabled == that.gameMultipleDisabled && notifiedFromBirthdayChange == that.notifiedFromBirthdayChange && disableExplicit == that.disableExplicit && hasReceivedGreet == that.hasReceivedGreet && Objects.equals(id, that.id) && Objects.equals(autoroles, that.autoroles) && Objects.equals(birthdayChannel, that.birthdayChannel) && Objects.equals(birthdayRole, that.birthdayRole) && Objects.equals(channelSpecificDisabledCategories, that.channelSpecificDisabledCategories) && Objects.equals(channelSpecificDisabledCommands, that.channelSpecificDisabledCommands) && Objects.equals(disabledCategories, that.disabledCategories) && Objects.equals(disabledChannels, that.disabledChannels) && Objects.equals(disabledCommands, that.disabledCommands) && Objects.equals(disabledRoles, that.disabledRoles) && Objects.equals(disabledUsers, that.disabledUsers) && Objects.equals(guildAutoRole, that.guildAutoRole) && Objects.equals(guildCustomPrefix, that.guildCustomPrefix) && Objects.equals(guildLogChannel, that.guildLogChannel) && Objects.equals(joinMessage, that.joinMessage) && Objects.equals(leaveMessage, that.leaveMessage) && Objects.equals(logExcludedChannels, that.logExcludedChannels) && Objects.equals(logJoinLeaveChannel, that.logJoinLeaveChannel) && Objects.equals(modlogBlacklistedPeople, that.modlogBlacklistedPeople) && Objects.equals(musicChannel, that.musicChannel) && Objects.equals(mutedRole, that.mutedRole) && Objects.equals(premiumKey, that.premiumKey) && Objects.equals(rolesBlockedFromCommands, that.rolesBlockedFromCommands) && Objects.equals(gameTimeoutExpectedAt, that.gameTimeoutExpectedAt) && Objects.equals(blackListedImageTags, that.blackListedImageTags) && Objects.equals(logJoinChannel, that.logJoinChannel) && Objects.equals(logLeaveChannel, that.logLeaveChannel) && Objects.equals(linkProtectionAllowedUsers, that.linkProtectionAllowedUsers) && Objects.equals(roleSpecificDisabledCategories, that.roleSpecificDisabledCategories) && Objects.equals(roleSpecificDisabledCommands, that.roleSpecificDisabledCommands) && Objects.equals(lang, that.lang) && Objects.equals(extraJoinMessages, that.extraJoinMessages) && Objects.equals(extraLeaveMessages, that.extraLeaveMessages) && Objects.equals(birthdayMessage, that.birthdayMessage) && Objects.equals(mpLinkedTo, that.mpLinkedTo) && Objects.equals(modLogBlacklistWords, that.modLogBlacklistWords) && Objects.equals(autoroleCategories, that.autoroleCategories) && Objects.equals(editMessageLog, that.editMessageLog) && Objects.equals(deleteMessageLog, that.deleteMessageLog) && Objects.equals(bannedMemberLog, that.bannedMemberLog) && Objects.equals(unbannedMemberLog, that.unbannedMemberLog) && Objects.equals(kickedMemberLog, that.kickedMemberLog) && Objects.equals(birthdayBlockedIds, that.birthdayBlockedIds) && Objects.equals(logTimezone, that.logTimezone) && Objects.equals(allowedBirthdays, that.allowedBirthdays) && Objects.equals(djRoleId, that.djRoleId) && Objects.equals(musicQueueSizeLimit, that.musicQueueSizeLimit) && Objects.equals(runningPolls, that.runningPolls);
     }
 

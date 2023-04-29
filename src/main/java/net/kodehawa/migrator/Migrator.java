@@ -10,13 +10,13 @@ import com.mongodb.connection.ConnectionPoolSettings;
 import com.rethinkdb.net.Connection;
 import com.rethinkdb.net.Result;
 import net.kodehawa.migrator.mongodb.CustomCommand;
-import net.kodehawa.migrator.mongodb.GuildDatabase;
+import net.kodehawa.migrator.mongodb.MongoGuild;
 import net.kodehawa.migrator.mongodb.ManagedMongoObject;
 import net.kodehawa.migrator.mongodb.Marriage;
 import net.kodehawa.migrator.mongodb.Player;
 import net.kodehawa.migrator.mongodb.PlayerStats;
 import net.kodehawa.migrator.mongodb.PremiumKey;
-import net.kodehawa.migrator.mongodb.UserDatabase;
+import net.kodehawa.migrator.mongodb.MongoUser;
 import net.kodehawa.migrator.mongodb.codecs.MapCodecProvider;
 import net.kodehawa.migrator.rethinkdb.ManagedObject;
 import net.kodehawa.migrator.rethinkdb.RethinkCustomCommand;
@@ -56,7 +56,7 @@ public class Migrator {
         for (var user : users) {
             var id = user.getId();
             logger.info("Migrating user {} out of {} (id: {})", ++i, users.size(), id);
-            var mongoUser = UserDatabase.of(id);
+            var mongoUser = MongoUser.of(id);
             var rtdbData = user.getData();
 
             mongoUser.setPremiumUntil(user.getPremiumUntil());
@@ -79,7 +79,7 @@ public class Migrator {
             mongoUser.setEquippedItems(rtdbData.getEquippedItems());
             mongoUser.setRemindedTimes(rtdbData.getRemindedTimes());
 
-            if (mongoUser.equals(UserDatabase.of(id))) {
+            if (mongoUser.equals(MongoUser.of(id))) {
                 logger.warn("Unchanged object id {}, skipping...", id);
                 continue;
             }
@@ -141,6 +141,7 @@ public class Migrator {
         logger.info("Started Player migration...");
         var players = getRethinkDBPlayers();
         i = 0;
+        var skipped = 0;
         for (var player : players) {
             var id = player.getId();
             logger.info("Migrating Player {} out of {} (id: {})", ++i, players.size(), id);
@@ -193,13 +194,14 @@ public class Migrator {
 
             if (mongoPlayer.equals(Player.of(player.getUserId()))) {
                 logger.warn("Unchanged object id {}, skipping...", id);
+                skipped++;
                 continue;
             }
 
             mongoPlayer.save();
         }
 
-        logger.info("!!! Finished Player migration.\n");
+        logger.info("!!! Finished Player migration, skipped unchanged objects: {}\n", skipped);
 
         logger.info("Started Player Statistics migration...");
         var playerStats = getRethinkPlayerStats();
@@ -231,10 +233,11 @@ public class Migrator {
         logger.info("Started Guild migration...");
         var guilds = getRethinkGuilds();
         i = 0;
+        skipped = 0;
         for (var guild : guilds) {
             var id = guild.getId();
             logger.info("Migrating Guild {} out of {} (id: {})", ++i, guilds.size(), id);
-            var mongoGuild = GuildDatabase.of(id);
+            var mongoGuild = MongoGuild.of(id);
             var rethinkData = guild.getData();
             // This was painstakingly double checked using the incredible technology of a single notepad with the fields on it and making sure the amount matched up.
             // Yep, I'm suffering.
@@ -303,15 +306,16 @@ public class Migrator {
             mongoGuild.setRunningPolls(rethinkData.getRunningPolls());
             mongoGuild.setHasReceivedGreet(rethinkData.isHasReceivedGreet());
 
-            if (mongoGuild.equals(GuildDatabase.of(id))) {
+            if (mongoGuild.equals(MongoGuild.of(id))) {
                 logger.warn("Unchanged object id {}, skipping...", id);
+                skipped++;
                 continue;
             }
 
             mongoGuild.save();
         }
 
-        logger.info("!!! Finished Guild migration.\n");
+        logger.info("!!! Finished Guild migration, skipped unchanged objects: {}\n", skipped);
     }
 
     private static Connection rethinkConnection;
