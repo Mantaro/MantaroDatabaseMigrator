@@ -47,6 +47,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class Migrator {
     public static final Logger logger = LoggerFactory.getLogger(Migrator.class);
+
     public static void main(String[] args) {
         logger.info("Starting migration...\n");
 
@@ -277,7 +278,6 @@ public class Migrator {
             mongoGuild.setBlackListedImageTags(rethinkData.getBlackListedImageTags());
             mongoGuild.setLogJoinChannel(rethinkData.getLogJoinChannel());
             mongoGuild.setLogLeaveChannel(rethinkData.getLogLeaveChannel());
-            mongoGuild.setLinkProtectionAllowedUsers(rethinkData.getLinkProtectionAllowedUsers());
             mongoGuild.setRoleSpecificDisabledCategories(rethinkData.getRoleSpecificDisabledCategories());
             mongoGuild.setRoleSpecificDisabledCommands(rethinkData.getRoleSpecificDisabledCommands());
             mongoGuild.setLang(rethinkData.getLang());
