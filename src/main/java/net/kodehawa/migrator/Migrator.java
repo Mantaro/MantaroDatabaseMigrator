@@ -10,6 +10,7 @@ import com.mongodb.connection.ConnectionPoolSettings;
 import com.rethinkdb.net.Connection;
 import com.rethinkdb.net.Result;
 import net.kodehawa.migrator.mongodb.CustomCommand;
+import net.kodehawa.migrator.mongodb.MantaroObject;
 import net.kodehawa.migrator.mongodb.MongoGuild;
 import net.kodehawa.migrator.mongodb.ManagedMongoObject;
 import net.kodehawa.migrator.mongodb.Marriage;
@@ -50,6 +51,12 @@ public class Migrator {
 
     public static void main(String[] args) {
         logger.info("Starting migration...\n");
+
+        logger.info("Started MantaroObject migration...");
+        var rethinkObj = getRethinkDBMantaroObject();
+        var mongoObj = new MantaroObject(rethinkObj.getBlackListedGuilds(), rethinkObj.getBlackListedUsers());
+        mongoObj.save();
+        logger.info("!!! Finished MantaroObject migration\n");
 
         logger.info("Started User migration...");
         var users = getRethinkDBUsers();
@@ -406,6 +413,11 @@ public class Migrator {
         var list = c.toList();
         logger.info("Got all keys, list size is: {}", list.size());
         return list;
+    }
+
+    public static MantaroObject getRethinkDBMantaroObject() {
+        logger.info("Getting MantaroObject...");
+        return r.table(MantaroObject.DB_TABLE).get("mantaro").runAtom(rethinkConnection(), MantaroObject.class);
     }
 
     public static List<RethinkUser> getRethinkDBUsers() {

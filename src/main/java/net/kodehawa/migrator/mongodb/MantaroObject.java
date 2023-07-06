@@ -19,7 +19,6 @@ package net.kodehawa.migrator.mongodb;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import net.kodehawa.migrator.Migrator;
-import net.kodehawa.migrator.Pair;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
@@ -27,8 +26,6 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MantaroObject implements ManagedMongoObject {
@@ -39,25 +36,18 @@ public class MantaroObject implements ManagedMongoObject {
 
     public List<String> blackListedGuilds;
     public List<String> blackListedUsers;
-    public List<String> patreonUsers;
-    private Map<String, Pair<String, Long>> mutes;
-    private Map<String, Long> tempBans;
 
     @BsonCreator
     public MantaroObject(@BsonProperty("blackListedGuilds") List<String> blackListedGuilds,
-                         @BsonProperty("blackListedUsers") List<String> blackListedUsers,
-                         @BsonProperty("patreonUsers") List<String> patreonUsers,
-                         @BsonProperty("mutes") Map<String, Pair<String, Long>> mutes) {
+                         @BsonProperty("blackListedUsers") List<String> blackListedUsers) {
         this.blackListedGuilds = blackListedGuilds;
         this.blackListedUsers = blackListedUsers;
-        this.patreonUsers = patreonUsers;
-        this.mutes = mutes;
     }
 
     public MantaroObject() { }
 
     public static MantaroObject create() {
-        return new MantaroObject(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ConcurrentHashMap<>());
+        return new MantaroObject(new ArrayList<>(), new ArrayList<>());
     }
 
     public String getId() {
@@ -96,29 +86,5 @@ public class MantaroObject implements ManagedMongoObject {
 
     public void setBlackListedUsers(List<String> blackListedUsers) {
         this.blackListedUsers = blackListedUsers;
-    }
-
-    public List<String> getPatreonUsers() {
-        return this.patreonUsers;
-    }
-
-    public void setPatreonUsers(List<String> patreonUsers) {
-        this.patreonUsers = patreonUsers;
-    }
-
-    public Map<String, Pair<String, Long>> getMutes() {
-        return this.mutes;
-    }
-
-    public void setMutes(Map<String, Pair<String, Long>> mutes) {
-        this.mutes = mutes;
-    }
-
-    public Map<String, Long> getTempBans() {
-        return this.tempBans;
-    }
-
-    public void setTempBans(Map<String, Long> tempBans) {
-        this.tempBans = tempBans;
     }
 }
