@@ -139,6 +139,7 @@ public class Migrator {
             mongoMarriage.timezone(marriage.getData().getTimezone());
             mongoMarriage.car(marriage.getData().hasCar());
             mongoMarriage.house(marriage.getData().hasHouse());
+            mongoMarriage.pet(marriage.getData().getPet());
 
             mongoMarriage.save();
         }
