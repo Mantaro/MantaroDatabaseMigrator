@@ -52,6 +52,38 @@ public class Migrator {
     public static void main(String[] args) {
         logger.info("Starting migration...\n");
 
+        if (getValue("migrator.only_marriage_pets") != null) { // I messed up, and I shall fix it.
+            logger.info("Migrating only Marriage pets...");
+            var marriages = getRethinkDBMarriages();
+            var collection = mongoConnection().getDatabase("mantaro").getCollection(Marriage.DB_TABLE, Marriage.class);
+
+            int i = 0;
+            for (var marriage : marriages) {
+                var id = marriage.getId();
+                var mongoMarriage = collection.find().filter(Filters.eq(id)).first();
+                if (mongoMarriage == null) {
+                    logger.warn("No marriage for object {}?", id);
+                    continue;
+                }
+
+                if (mongoMarriage.getPet() != null) {
+                    logger.warn("Pet already was overriden on marriage {}", id);
+                    continue;
+                }
+
+                var pet = marriage.getData().getPet();
+                if (marriage.getData().getPet() != null) {
+                    i++;
+                    mongoMarriage.pet(pet);
+                    mongoMarriage.save();
+                    logger.info("Saved pet on marriage {} to db", id);
+                }
+            }
+
+            logger.info("Bailing out, amount was {}...", i);
+            return;
+        }
+
         logger.info("Started MantaroObject migration...");
         var rethinkObj = getRethinkDBMantaroObject();
         var mongoObj = new MantaroObject(rethinkObj.getBlackListedGuilds(), rethinkObj.getBlackListedUsers());
@@ -482,12 +514,21 @@ public class Migrator {
     public static <T extends ManagedMongoObject> void saveMongo(T object, Class<T> clazz) {
         try {
             var collection = mongoConnection().getDatabase("mantaro").getCollection(object.getTableName(), clazz);
-            if (collection.find().filter(Filters.eq(object.getId())).first() != null) {
+            if (getValue("migrator.only_marriage_pets") != null && !object.getTableName().equals(Marriage.DB_TABLE)) {
+                logger.error("!! Tried to save a non-marriage object? Something is wrong.");
+                return;
+            }
+
+            if (collection.find().filter(Filters.eq(object.getId())).first() != null && getValue("migrator.only_marriage_pets") == null) {
                 logger.warn("Skipping save: object already exists?");
                 return;
             }
 
-            collection.insertOne(object);
+            if (getValue("migrator.only_marriage_pets") != null) {
+                collection.findOneAndReplace(Filters.eq(object.getId()), object);
+            } else {
+                collection.insertOne(object);
+            }
             logger.info("Saved id {} to Mongo: {}", object.getId(), object);
         } catch (Exception e) {
             logger.error("Error saving object!", e);
