@@ -3,10 +3,12 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 plugins {
     id("java")
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("application")
 }
 
 group = "net.kodehawa.migrator"
 version = "1.0"
+application.mainClass.set("net.kodehawa.migrator.Migrator")
 
 repositories {
     mavenCentral()
