@@ -71,10 +71,10 @@ public class Migrator {
                     continue;
                 }
 
-                var pet = marriage.getData().getPet();
-                if (marriage.getData().getPet() != null) {
+                var rethinkPet = marriage.getData().getPet();
+                if (rethinkPet != null) {
                     i++;
-                    mongoMarriage.pet(pet);
+                    mongoMarriage.pet(rethinkPet);
                     mongoMarriage.save();
                     logger.info("Saved pet on marriage {} to db", id);
                 }
