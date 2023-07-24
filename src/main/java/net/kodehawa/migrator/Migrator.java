@@ -184,62 +184,66 @@ public class Migrator {
         i = 0;
         var skipped = 0;
         for (var player : players) {
-            var id = player.getId();
-            logger.info("Migrating Player {} out of {} (id: {})", ++i, players.size(), id);
-            var mongoPlayer = Player.of(player.getUserId());
-            var rethinkData = player.getData();
-            if (player.getLevel() > 1) { // Avoid level 1 players getting "not new" treatment.
-                mongoPlayer.level(player.getLevel());
+            try {
+                var id = player.getId();
+                logger.info("Migrating Player {} out of {} (id: {})", ++i, players.size(), id);
+                var mongoPlayer = Player.of(player.getUserId());
+                var rethinkData = player.getData();
+                if (player.getLevel() > 1) { // Avoid level 1 players getting "not new" treatment.
+                    mongoPlayer.level(player.getLevel());
+                }
+
+                mongoPlayer.setOldMoney(player.getOldMoney());
+                mongoPlayer.setNewMoney(rethinkData.getNewMoney());
+                mongoPlayer.reputation(player.getReputation());
+
+                if (rethinkData.getExperience() > 500) { // Avoid a bunch of 1~150 experience and nothing else changed objects.
+                    mongoPlayer.setExperience(rethinkData.getExperience());
+                }
+
+                mongoPlayer.dailyStreak(rethinkData.getDailyStreak());
+                mongoPlayer.description(rethinkData.getDescription());
+                mongoPlayer.gamesWon(rethinkData.getGamesWon());
+                mongoPlayer.lastDailyAt(rethinkData.getLastDailyAt());
+                mongoPlayer.setLockedUntil(rethinkData.getLockedUntil());
+                mongoPlayer.mainBadge(rethinkData.getMainBadge());
+                mongoPlayer.marketUsed(rethinkData.getMarketUsed());
+                mongoPlayer.showBadge(rethinkData.isShowBadge());
+                mongoPlayer.setActivePotion(rethinkData.getActivePotion());
+                mongoPlayer.setActiveBuff(rethinkData.getActiveBuff());
+                mongoPlayer.waifuCachedValue(rethinkData.getWaifuCachedValue());
+                mongoPlayer.claimLocked(rethinkData.isClaimLocked());
+                mongoPlayer.setMiningExperience(rethinkData.getMiningExperience());
+                mongoPlayer.setFishingExperience(rethinkData.getFishingExperience());
+                mongoPlayer.setChopExperience(rethinkData.getChopExperience());
+                mongoPlayer.timesMopped(rethinkData.getTimesMopped());
+                mongoPlayer.cratesOpened(rethinkData.getCratesOpened());
+                mongoPlayer.sharksCaught(rethinkData.getSharksCaught());
+                mongoPlayer.waifuout(rethinkData.isWaifuout());
+                mongoPlayer.lastCrateGiven(rethinkData.getLastCrateGiven());
+                mongoPlayer.setLastSeenCampaign(rethinkData.getLastSeenCampaign());
+                mongoPlayer.setResetWarning(rethinkData.isResetWarning());
+                mongoPlayer.inventorySortType(rethinkData.getInventorySortType());
+                mongoPlayer.hiddenLegacy(rethinkData.isHiddenLegacy());
+                mongoPlayer.newPlayerNotice(rethinkData.isNewPlayerNotice());
+                mongoPlayer.setPetSlots(rethinkData.getPetSlots());
+                mongoPlayer.setPetChoice(rethinkData.getPetChoice());
+                mongoPlayer.setPet(rethinkData.getPet());
+                mongoPlayer.setBadges(rethinkData.getBadges());
+                mongoPlayer.setProfileComponents(rethinkData.getProfileComponents());
+                // This takes care of the inventory format change, as merge is done as a list of ItemStack, which get serialized on save.
+                mongoPlayer.mergeInventory(player.getInventory().asList());
+
+                if (mongoPlayer.equals(Player.of(player.getUserId()))) {
+                    logger.warn("Unchanged object id {}, skipping...", id);
+                    skipped++;
+                    continue;
+                }
+
+                mongoPlayer.save();
+            } catch (Exception e) { // continue loop
+                e.printStackTrace();
             }
-
-            mongoPlayer.setOldMoney(player.getOldMoney());
-            mongoPlayer.setNewMoney(rethinkData.getNewMoney());
-            mongoPlayer.reputation(player.getReputation());
-
-            if (rethinkData.getExperience() > 500) { // Avoid a bunch of 1~150 experience and nothing else changed objects.
-                mongoPlayer.setExperience(rethinkData.getExperience());
-            }
-
-            mongoPlayer.dailyStreak(rethinkData.getDailyStreak());
-            mongoPlayer.description(rethinkData.getDescription());
-            mongoPlayer.gamesWon(rethinkData.getGamesWon());
-            mongoPlayer.lastDailyAt(rethinkData.getLastDailyAt());
-            mongoPlayer.setLockedUntil(rethinkData.getLockedUntil());
-            mongoPlayer.mainBadge(rethinkData.getMainBadge());
-            mongoPlayer.marketUsed(rethinkData.getMarketUsed());
-            mongoPlayer.showBadge(rethinkData.isShowBadge());
-            mongoPlayer.setActivePotion(rethinkData.getActivePotion());
-            mongoPlayer.setActiveBuff(rethinkData.getActiveBuff());
-            mongoPlayer.waifuCachedValue(rethinkData.getWaifuCachedValue());
-            mongoPlayer.claimLocked(rethinkData.isClaimLocked());
-            mongoPlayer.setMiningExperience(rethinkData.getMiningExperience());
-            mongoPlayer.setFishingExperience(rethinkData.getFishingExperience());
-            mongoPlayer.setChopExperience(rethinkData.getChopExperience());
-            mongoPlayer.timesMopped(rethinkData.getTimesMopped());
-            mongoPlayer.cratesOpened(rethinkData.getCratesOpened());
-            mongoPlayer.sharksCaught(rethinkData.getSharksCaught());
-            mongoPlayer.waifuout(rethinkData.isWaifuout());
-            mongoPlayer.lastCrateGiven(rethinkData.getLastCrateGiven());
-            mongoPlayer.setLastSeenCampaign(rethinkData.getLastSeenCampaign());
-            mongoPlayer.setResetWarning(rethinkData.isResetWarning());
-            mongoPlayer.inventorySortType(rethinkData.getInventorySortType());
-            mongoPlayer.hiddenLegacy(rethinkData.isHiddenLegacy());
-            mongoPlayer.newPlayerNotice(rethinkData.isNewPlayerNotice());
-            mongoPlayer.setPetSlots(rethinkData.getPetSlots());
-            mongoPlayer.setPetChoice(rethinkData.getPetChoice());
-            mongoPlayer.setPet(rethinkData.getPet());
-            mongoPlayer.setBadges(rethinkData.getBadges());
-            mongoPlayer.setProfileComponents(rethinkData.getProfileComponents());
-            // This takes care of the inventory format change, as merge is done as a list of ItemStack, which get serialized on save.
-            mongoPlayer.mergeInventory(player.getInventory().asList());
-
-            if (mongoPlayer.equals(Player.of(player.getUserId()))) {
-                logger.warn("Unchanged object id {}, skipping...", id);
-                skipped++;
-                continue;
-            }
-
-            mongoPlayer.save();
         }
 
         logger.info("!!! Finished Player migration, skipped unchanged objects: {}\n", skipped);
@@ -276,83 +280,87 @@ public class Migrator {
         i = 0;
         skipped = 0;
         for (var guild : guilds) {
-            var id = guild.getId();
-            logger.info("Migrating Guild {} out of {} (id: {})", ++i, guilds.size(), id);
-            var mongoGuild = MongoGuild.of(id);
-            var rethinkData = guild.getData();
-            // This was painstakingly double checked using the incredible technology of a single notepad with the fields on it and making sure the amount matched up.
-            // Yep, I'm suffering.
-            mongoGuild.setPremiumUntil(guild.getPremiumUntil());
-            mongoGuild.setAutoroles(rethinkData.getAutoroles());
-            mongoGuild.setBirthdayChannel(rethinkData.getBirthdayChannel());
-            mongoGuild.setBirthdayRole(rethinkData.getBirthdayRole());
-            mongoGuild.setCases(rethinkData.getCases());
-            mongoGuild.setChannelSpecificDisabledCategories(rethinkData.getChannelSpecificDisabledCategories());
-            mongoGuild.setChannelSpecificDisabledCommands(rethinkData.getChannelSpecificDisabledCommands());
-            mongoGuild.setDisabledCategories(rethinkData.getDisabledCategories());
-            mongoGuild.setDisabledChannels(rethinkData.getDisabledChannels());
-            mongoGuild.setDisabledCommands(rethinkData.getDisabledCommands());
-            mongoGuild.setDisabledRoles(rethinkData.getDisabledRoles());
-            mongoGuild.setDisabledUsers(rethinkData.getDisabledUsers());
-            mongoGuild.setGuildAutoRole(rethinkData.getGuildAutoRole());
-            mongoGuild.setGuildCustomPrefix(rethinkData.getGuildCustomPrefix());
-            mongoGuild.setGuildLogChannel(rethinkData.getGuildLogChannel());
-            mongoGuild.setJoinMessage(rethinkData.getJoinMessage());
-            mongoGuild.setLeaveMessage(rethinkData.getLeaveMessage());
-            mongoGuild.setLogExcludedChannels(rethinkData.getLogExcludedChannels());
-            mongoGuild.setLogJoinLeaveChannel(rethinkData.getLogJoinLeaveChannel());
-            mongoGuild.setMaxFairQueue(rethinkData.getMaxFairQueue());
-            mongoGuild.setModlogBlacklistedPeople(rethinkData.getModlogBlacklistedPeople());
-            mongoGuild.setMusicAnnounce(rethinkData.isMusicAnnounce());
-            mongoGuild.setMusicChannel(rethinkData.getMusicChannel());
-            mongoGuild.setMutedRole(rethinkData.getMutedRole());
-            mongoGuild.setNoMentionsAction(rethinkData.isNoMentionsAction());
-            mongoGuild.setPremiumKey(rethinkData.getPremiumKey());
-            mongoGuild.setRanPolls(rethinkData.getRanPolls());
-            mongoGuild.setRolesBlockedFromCommands(rethinkData.getRolesBlockedFromCommands());
-            mongoGuild.setSetModTimeout(rethinkData.getSetModTimeout());
-            mongoGuild.setTimeDisplay(rethinkData.getTimeDisplay());
-            mongoGuild.setGameTimeoutExpectedAt(rethinkData.getGameTimeoutExpectedAt());
-            mongoGuild.setIgnoreBotsAutoRole(rethinkData.isIgnoreBotsAutoRole());
-            mongoGuild.setIgnoreBotsWelcomeMessage(rethinkData.isIgnoreBotsWelcomeMessage());
-            mongoGuild.setBlackListedImageTags(rethinkData.getBlackListedImageTags());
-            mongoGuild.setLogJoinChannel(rethinkData.getLogJoinChannel());
-            mongoGuild.setLogLeaveChannel(rethinkData.getLogLeaveChannel());
-            mongoGuild.setRoleSpecificDisabledCategories(rethinkData.getRoleSpecificDisabledCategories());
-            mongoGuild.setRoleSpecificDisabledCommands(rethinkData.getRoleSpecificDisabledCommands());
-            mongoGuild.setLang(rethinkData.getLang());
-            mongoGuild.setMusicVote(rethinkData.isMusicVote());
-            mongoGuild.setExtraJoinMessages(rethinkData.getExtraJoinMessages());
-            mongoGuild.setExtraLeaveMessages(rethinkData.getExtraLeaveMessages());
-            mongoGuild.setBirthdayMessage(rethinkData.getBirthdayMessage());
-            mongoGuild.setCustomAdminLockNew(rethinkData.isCustomAdminLockNew());
-            mongoGuild.setMpLinkedTo(rethinkData.getMpLinkedTo());
-            mongoGuild.setModlogBlacklistedPeople(rethinkData.getModlogBlacklistedPeople());
-            mongoGuild.setAutoroleCategories(rethinkData.getAutoroleCategories());
-            mongoGuild.setEditMessageLog(rethinkData.getEditMessageLog());
-            mongoGuild.setDeleteMessageLog(rethinkData.getDeleteMessageLog());
-            mongoGuild.setBannedMemberLog(rethinkData.getBannedMemberLog());
-            mongoGuild.setUnbannedMemberLog(rethinkData.getUnbannedMemberLog());
-            mongoGuild.setKickedMemberLog(rethinkData.getKickedMemberLog());
-            mongoGuild.setCommandWarningDisplay(rethinkData.isCommandWarningDisplay());
-            mongoGuild.setBirthdayBlockedIds(rethinkData.getBirthdayBlockedIds());
-            mongoGuild.setGameMultipleDisabled(rethinkData.isGameMultipleDisabled());
-            mongoGuild.setLogTimezone(rethinkData.getLogTimezone());
-            mongoGuild.setAllowedBirthdays(rethinkData.getAllowedBirthdays());
-            mongoGuild.setNotifiedFromBirthdayChange(rethinkData.isNotifiedFromBirthdayChange());
-            mongoGuild.setDisableExplicit(rethinkData.isDisableExplicit());
-            mongoGuild.setDjRoleId(rethinkData.getDjRoleId());
-            mongoGuild.setMusicQueueSizeLimit(rethinkData.getMusicQueueSizeLimit());
-            mongoGuild.setRunningPolls(rethinkData.getRunningPolls());
-            mongoGuild.setHasReceivedGreet(rethinkData.isHasReceivedGreet());
+            try {
+                var id = guild.getId();
+                logger.info("Migrating Guild {} out of {} (id: {})", ++i, guilds.size(), id);
+                var mongoGuild = MongoGuild.of(id);
+                var rethinkData = guild.getData();
+                // This was painstakingly double checked using the incredible technology of a single notepad with the fields on it and making sure the amount matched up.
+                // Yep, I'm suffering.
+                mongoGuild.setPremiumUntil(guild.getPremiumUntil());
+                mongoGuild.setAutoroles(rethinkData.getAutoroles());
+                mongoGuild.setBirthdayChannel(rethinkData.getBirthdayChannel());
+                mongoGuild.setBirthdayRole(rethinkData.getBirthdayRole());
+                mongoGuild.setCases(rethinkData.getCases());
+                mongoGuild.setChannelSpecificDisabledCategories(rethinkData.getChannelSpecificDisabledCategories());
+                mongoGuild.setChannelSpecificDisabledCommands(rethinkData.getChannelSpecificDisabledCommands());
+                mongoGuild.setDisabledCategories(rethinkData.getDisabledCategories());
+                mongoGuild.setDisabledChannels(rethinkData.getDisabledChannels());
+                mongoGuild.setDisabledCommands(rethinkData.getDisabledCommands());
+                mongoGuild.setDisabledRoles(rethinkData.getDisabledRoles());
+                mongoGuild.setDisabledUsers(rethinkData.getDisabledUsers());
+                mongoGuild.setGuildAutoRole(rethinkData.getGuildAutoRole());
+                mongoGuild.setGuildCustomPrefix(rethinkData.getGuildCustomPrefix());
+                mongoGuild.setGuildLogChannel(rethinkData.getGuildLogChannel());
+                mongoGuild.setJoinMessage(rethinkData.getJoinMessage());
+                mongoGuild.setLeaveMessage(rethinkData.getLeaveMessage());
+                mongoGuild.setLogExcludedChannels(rethinkData.getLogExcludedChannels());
+                mongoGuild.setLogJoinLeaveChannel(rethinkData.getLogJoinLeaveChannel());
+                mongoGuild.setMaxFairQueue(rethinkData.getMaxFairQueue());
+                mongoGuild.setModlogBlacklistedPeople(rethinkData.getModlogBlacklistedPeople());
+                mongoGuild.setMusicAnnounce(rethinkData.isMusicAnnounce());
+                mongoGuild.setMusicChannel(rethinkData.getMusicChannel());
+                mongoGuild.setMutedRole(rethinkData.getMutedRole());
+                mongoGuild.setNoMentionsAction(rethinkData.isNoMentionsAction());
+                mongoGuild.setPremiumKey(rethinkData.getPremiumKey());
+                mongoGuild.setRanPolls(rethinkData.getRanPolls());
+                mongoGuild.setRolesBlockedFromCommands(rethinkData.getRolesBlockedFromCommands());
+                mongoGuild.setSetModTimeout(rethinkData.getSetModTimeout());
+                mongoGuild.setTimeDisplay(rethinkData.getTimeDisplay());
+                mongoGuild.setGameTimeoutExpectedAt(rethinkData.getGameTimeoutExpectedAt());
+                mongoGuild.setIgnoreBotsAutoRole(rethinkData.isIgnoreBotsAutoRole());
+                mongoGuild.setIgnoreBotsWelcomeMessage(rethinkData.isIgnoreBotsWelcomeMessage());
+                mongoGuild.setBlackListedImageTags(rethinkData.getBlackListedImageTags());
+                mongoGuild.setLogJoinChannel(rethinkData.getLogJoinChannel());
+                mongoGuild.setLogLeaveChannel(rethinkData.getLogLeaveChannel());
+                mongoGuild.setRoleSpecificDisabledCategories(rethinkData.getRoleSpecificDisabledCategories());
+                mongoGuild.setRoleSpecificDisabledCommands(rethinkData.getRoleSpecificDisabledCommands());
+                mongoGuild.setLang(rethinkData.getLang());
+                mongoGuild.setMusicVote(rethinkData.isMusicVote());
+                mongoGuild.setExtraJoinMessages(rethinkData.getExtraJoinMessages());
+                mongoGuild.setExtraLeaveMessages(rethinkData.getExtraLeaveMessages());
+                mongoGuild.setBirthdayMessage(rethinkData.getBirthdayMessage());
+                mongoGuild.setCustomAdminLockNew(rethinkData.isCustomAdminLockNew());
+                mongoGuild.setMpLinkedTo(rethinkData.getMpLinkedTo());
+                mongoGuild.setModlogBlacklistedPeople(rethinkData.getModlogBlacklistedPeople());
+                mongoGuild.setAutoroleCategories(rethinkData.getAutoroleCategories());
+                mongoGuild.setEditMessageLog(rethinkData.getEditMessageLog());
+                mongoGuild.setDeleteMessageLog(rethinkData.getDeleteMessageLog());
+                mongoGuild.setBannedMemberLog(rethinkData.getBannedMemberLog());
+                mongoGuild.setUnbannedMemberLog(rethinkData.getUnbannedMemberLog());
+                mongoGuild.setKickedMemberLog(rethinkData.getKickedMemberLog());
+                mongoGuild.setCommandWarningDisplay(rethinkData.isCommandWarningDisplay());
+                mongoGuild.setBirthdayBlockedIds(rethinkData.getBirthdayBlockedIds());
+                mongoGuild.setGameMultipleDisabled(rethinkData.isGameMultipleDisabled());
+                mongoGuild.setLogTimezone(rethinkData.getLogTimezone());
+                mongoGuild.setAllowedBirthdays(rethinkData.getAllowedBirthdays());
+                mongoGuild.setNotifiedFromBirthdayChange(rethinkData.isNotifiedFromBirthdayChange());
+                mongoGuild.setDisableExplicit(rethinkData.isDisableExplicit());
+                mongoGuild.setDjRoleId(rethinkData.getDjRoleId());
+                mongoGuild.setMusicQueueSizeLimit(rethinkData.getMusicQueueSizeLimit());
+                mongoGuild.setRunningPolls(rethinkData.getRunningPolls());
+                mongoGuild.setHasReceivedGreet(rethinkData.isHasReceivedGreet());
 
-            if (mongoGuild.equals(MongoGuild.of(id))) {
-                logger.warn("Unchanged object id {}, skipping...", id);
-                skipped++;
-                continue;
+                if (mongoGuild.equals(MongoGuild.of(id))) {
+                    logger.warn("Unchanged object id {}, skipping...", id);
+                    skipped++;
+                    continue;
+                }
+
+                mongoGuild.save();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            mongoGuild.save();
         }
 
         logger.info("!!! Finished Guild migration, skipped unchanged objects: {}\n", skipped);
