@@ -186,8 +186,8 @@ public class Migrator {
         var failed = 0;
 
         for (var player : players) {
+            var id = player.getId();
             try {
-                var id = player.getId();
                 logger.info("Migrating Player {} out of {} (id: {})", ++i, players.size(), id);
                 var mongoPlayer = Player.of(player.getUserId());
                 var rethinkData = player.getData();
@@ -245,7 +245,7 @@ public class Migrator {
                 mongoPlayer.save();
             } catch (Exception e) { // continue loop
                 failed++;
-                e.printStackTrace();
+                logger.error("Error on id " + id, e);
             }
         }
 
@@ -254,29 +254,37 @@ public class Migrator {
         logger.info("Started Player Statistics migration...");
         var playerStats = getRethinkPlayerStats();
         i = 0;
+        skipped = 0;
+        failed = 0;
         for (var stat : playerStats) {
             var id = stat.getId();
-            logger.info("Migrating PlayerStats {} out of {} (id: {})", ++i, playerStats.size(), id);
-            var mongoStat = PlayerStats.of(id);
-            mongoStat.setCraftedItems(stat.getCraftedItems());
-            mongoStat.setToolsBroken(stat.getToolsBroken());
-            mongoStat.setGambleWinAmount(stat.getGambleWinAmount());
-            mongoStat.setGambleWins(stat.getGambleWins());
-            mongoStat.setSlotsWins(stat.getSlotsWins());
-            mongoStat.setRepairedItems(stat.getRepairedItems());
-            mongoStat.setSalvagedItems(stat.getSalvagedItems());
-            mongoStat.setGambleLose(stat.getData().getGambleLose());
-            mongoStat.setSlotsLose(stat.getData().getSlotsLose());
+            try {
+                logger.info("Migrating PlayerStats {} out of {} (id: {})", ++i, playerStats.size(), id);
+                var mongoStat = PlayerStats.of(id);
+                mongoStat.setCraftedItems(stat.getCraftedItems());
+                mongoStat.setToolsBroken(stat.getToolsBroken());
+                mongoStat.setGambleWinAmount(stat.getGambleWinAmount());
+                mongoStat.setGambleWins(stat.getGambleWins());
+                mongoStat.setSlotsWins(stat.getSlotsWins());
+                mongoStat.setRepairedItems(stat.getRepairedItems());
+                mongoStat.setSalvagedItems(stat.getSalvagedItems());
+                mongoStat.setGambleLose(stat.getData().getGambleLose());
+                mongoStat.setSlotsLose(stat.getData().getSlotsLose());
 
-            if (mongoStat.equals(PlayerStats.of(id))) {
-                logger.warn("Unchanged object id {}, skipping...", id);
-                continue;
+                if (mongoStat.equals(PlayerStats.of(id))) {
+                    skipped++;
+                    logger.warn("Unchanged object id {}, skipping...", id);
+                    continue;
+                }
+
+                mongoStat.save();
+            } catch (Exception e) {
+                failed++;
+                logger.error("Error on id " + id, e);
             }
-
-            mongoStat.save();
         }
 
-        logger.info("!!! Finished Player Statistics migration.\n");
+        logger.info("!!! Finished Player Statistics migration. skipped objects: {}, failed objects: {}\n", skipped, failed);
 
         logger.info("Started Guild migration...");
         var guilds = getRethinkGuilds();
@@ -284,6 +292,7 @@ public class Migrator {
         skipped = 0;
         failed = 0;
         for (var guild : guilds) {
+            var id = guild.getId();
             try {
                 var id = guild.getId();
                 logger.info("Migrating Guild {} out of {} (id: {})", ++i, guilds.size(), id);
@@ -364,7 +373,7 @@ public class Migrator {
                 mongoGuild.save();
             } catch (Exception e) {
                 failed++;
-                e.printStackTrace();
+                logger.error("Error on id " + id, e);
             }
         }
 
