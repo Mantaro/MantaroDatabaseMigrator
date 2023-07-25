@@ -183,6 +183,8 @@ public class Migrator {
         var players = getRethinkDBPlayers();
         i = 0;
         var skipped = 0;
+        var failed = 0;
+
         for (var player : players) {
             try {
                 var id = player.getId();
@@ -242,11 +244,12 @@ public class Migrator {
 
                 mongoPlayer.save();
             } catch (Exception e) { // continue loop
+                failed++;
                 e.printStackTrace();
             }
         }
 
-        logger.info("!!! Finished Player migration, skipped unchanged objects: {}\n", skipped);
+        logger.info("!!! Finished Player migration, skipped unchanged objects: {}, failed objects: {}\n", skipped, failed);
 
         logger.info("Started Player Statistics migration...");
         var playerStats = getRethinkPlayerStats();
@@ -279,6 +282,7 @@ public class Migrator {
         var guilds = getRethinkGuilds();
         i = 0;
         skipped = 0;
+        failed = 0;
         for (var guild : guilds) {
             try {
                 var id = guild.getId();
@@ -359,11 +363,12 @@ public class Migrator {
 
                 mongoGuild.save();
             } catch (Exception e) {
+                failed++;
                 e.printStackTrace();
             }
         }
 
-        logger.info("!!! Finished Guild migration, skipped unchanged objects: {}\n", skipped);
+        logger.info("!!! Finished Guild migration, skipped unchanged objects: {}, failed: {}\n", skipped, failed);
     }
 
     private static Connection rethinkConnection;
