@@ -93,6 +93,7 @@ public class Migrator {
         logger.info("Started User migration...");
         var users = getRethinkDBUsers();
         var i = 0;
+        var skipped = 0;
         for (var user : users) {
             var id = user.getId();
             logger.info("Migrating user {} out of {} (id: {})", ++i, users.size(), id);
@@ -120,6 +121,7 @@ public class Migrator {
             mongoUser.setRemindedTimes(rtdbData.getRemindedTimes());
 
             if (mongoUser.equals(MongoUser.of(id))) {
+                skipped++;
                 logger.warn("Unchanged object id {}, skipping...", id);
                 continue;
             }
@@ -127,7 +129,7 @@ public class Migrator {
             mongoUser.save();
         }
 
-        logger.info("!!! Finished User migration.\n");
+        logger.info("!!! Finished User migration. skipped unchanged objects: {}\n", skipped);
 
         logger.info("Started Key migration...");
         var keys = getRethinkDBPremiumKeys();
@@ -165,6 +167,7 @@ public class Migrator {
             var id = marriage.getId();
             logger.info("Migrating Marriage {} out of {} (id: {})", ++i, marriages.size(), id);
             var mongoMarriage = Marriage.of(id, marriage.getPlayer1(), marriage.getPlayer2());
+            mongoMarriage.marriageCreationMillis(marriage.getData().getMarriageCreationMillis());
             mongoMarriage.carName(marriage.getData().getCarName());
             mongoMarriage.houseName(marriage.getData().getHouseName());
             mongoMarriage.loveLetter(marriage.getData().getLoveLetter());
@@ -182,9 +185,8 @@ public class Migrator {
         logger.info("Started Player migration...");
         var players = getRethinkDBPlayers();
         i = 0;
-        var skipped = 0;
+        skipped = 0;
         var failed = 0;
-
         for (var player : players) {
             var id = player.getId();
             try {
@@ -294,7 +296,6 @@ public class Migrator {
         for (var guild : guilds) {
             var id = guild.getId();
             try {
-                var id = guild.getId();
                 logger.info("Migrating Guild {} out of {} (id: {})", ++i, guilds.size(), id);
                 var mongoGuild = MongoGuild.of(id);
                 var rethinkData = guild.getData();
