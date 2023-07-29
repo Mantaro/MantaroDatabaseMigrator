@@ -537,17 +537,17 @@ public class Migrator {
     public static <T extends ManagedMongoObject> void saveMongo(T object, Class<T> clazz) {
         try {
             var collection = mongoConnection().getDatabase("mantaro").getCollection(object.getTableName(), clazz);
-            if (getValue("migrator.only_marriage_pets") != null && !object.getTableName().equals(Marriage.DB_TABLE)) {
+            if ((getValue("migrator.only_marriage_pets") != null || getValue("migrator.only_marriage_date") != null) && !object.getTableName().equals(Marriage.DB_TABLE)) {
                 logger.error("!! Tried to save a non-marriage object? Something is wrong.");
                 return;
             }
 
-            if (collection.find().filter(Filters.eq(object.getId())).first() != null && getValue("migrator.only_marriage_pets") == null) {
+            if (collection.find().filter(Filters.eq(object.getId())).first() != null && getValue("migrator.only_marriage_pets") == null && getValue("migrator.only_marriage_date") == null) {
                 logger.warn("Skipping save: object already exists?");
                 return;
             }
 
-            if (getValue("migrator.only_marriage_pets") != null) {
+            if (getValue("migrator.only_marriage_pets") != null || getValue("migrator.only_marriage_date") != null) {
                 collection.findOneAndReplace(Filters.eq(object.getId()), object);
             } else {
                 collection.insertOne(object);
